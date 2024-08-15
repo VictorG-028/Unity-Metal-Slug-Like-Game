@@ -7,8 +7,8 @@ using UnityEngine.UIElements;
 public class PlayerMove : MonoBehaviour
 {
     private Rigidbody2D _playerRigidBody;
-    public float        _playerSpeed = 5f;
-    public float        _playerJumpForce = 8f;
+    public float        _playerSpeed = 1f;
+    public float        _playerJumpForce = 12f;
     private Vector2      _playerDirection;
 
     // Start is called before the first frame update
