@@ -8,7 +8,6 @@ public class Aim : MonoBehaviour
 {
     [SerializeField] private Texture2D cursorTexture = null;
     [SerializeField] private GameObject player = null;
-    [SerializeField] private Vector2 playerPosition = Vector2.zero;
     [SerializeField] private SpriteRenderer playerSpriteRenderer = null;
     [SerializeField] private SpriteRenderer thisSpriteRenderer = null;
 
@@ -19,9 +18,8 @@ public class Aim : MonoBehaviour
     private void OnValidate()
     {
         if (!cursorTexture) { cursorTexture = Resources.Load<Texture2D>("/Assets/Sprites/normal_sight"); } // TODO: descobrir pq isso não está carregando a imagem automaticamente
-        if (!player) { player = GameObject.Find("Player"); }
-        if (playerPosition == Vector2.zero) { playerPosition = GameObject.Find("Player").transform.position; }
-        if (!playerSpriteRenderer) { playerSpriteRenderer = GameObject.Find("Player").GetComponent<SpriteRenderer>(); }
+        if (!player) { player = GameObject.FindGameObjectWithTag("Player"); }
+        if (!playerSpriteRenderer) { playerSpriteRenderer = GameObject.FindGameObjectWithTag("Player").GetComponent<SpriteRenderer>(); }
         if (!thisSpriteRenderer) { thisSpriteRenderer = gameObject.GetComponent<SpriteRenderer>(); }
     }
 
@@ -37,7 +35,7 @@ public class Aim : MonoBehaviour
 
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // Ângulo entre Vector2D(1,0) e direction
         
-        print(angle);
+        //print(angle);
 
         if (angle > maxUpperAngle || angle < maxLowerAngle)
         {
