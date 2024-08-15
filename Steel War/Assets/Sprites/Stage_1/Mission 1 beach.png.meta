@@ -1,0 +1,360 @@
+fileFormatVersion: 2
+guid: 40c1705c12ee9c94d8cf018be5747c18
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 22
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mission 1 beach_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 230
+        width: 305
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d156c2e4ed459b14a9345e5d6129b4f1
+      internalID: 1328194811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mission 1 beach_1
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 230
+        width: 306
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcbc7f60f625d5d41b22887c1988f8e7
+      internalID: -300480670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mission 1 beach_2
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 230
+        width: 305
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e767e83430a08194182da683e0e96522
+      internalID: -1426356050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mission 1 beach_3
+      rect:
+        serializedVersion: 2
+        x: 926
+        y: 230
+        width: 305
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f8d4e0c526dcee4d95eca8811309d52
+      internalID: -90680923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mission 1 beach_4
+      rect:
+        serializedVersion: 2
+        x: 1232
+        y: 230
+        width: 306
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3068003793c0b4146a9c7f08bfdd764f
+      internalID: -179462181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mission 1 beach_5
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 230
+        width: 306
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 887155ceb9786b04aa1e04ea0d4d0746
+      internalID: 688790921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mission 1 beach_6
+      rect:
+        serializedVersion: 2
+        x: 1846
+        y: 230
+        width: 306
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49b528f6016c02a4f8de262b5ea98cb6
+      internalID: -1706909206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mission 1 beach_33
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 3
+        width: 1586
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2eea9d18bb7980a4788b95e300755c8f
+      internalID: -1046041534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mission 1 beach_34
+      rect:
+        serializedVersion: 2
+        x: 1589
+        y: 3
+        width: 305
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e04fb00906bc6b84baec8101a8c3c1b9
+      internalID: 1553803515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mission 1 beach_35
+      rect:
+        serializedVersion: 2
+        x: 1897
+        y: 3
+        width: 305
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 161d183e4ca30584182db32d6d852f00
+      internalID: -738614702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Mission 1 beach_0: 1328194811
+      Mission 1 beach_1: -300480670
+      Mission 1 beach_10: 958904193
+      Mission 1 beach_11: 627833588
+      Mission 1 beach_12: -1550092715
+      Mission 1 beach_13: -1352418093
+      Mission 1 beach_14: -1386033768
+      Mission 1 beach_15: -57515999
+      Mission 1 beach_16: 1294206133
+      Mission 1 beach_17: -642375807
+      Mission 1 beach_18: -1723208801
+      Mission 1 beach_19: 937902417
+      Mission 1 beach_2: -1426356050
+      Mission 1 beach_20: -1371505543
+      Mission 1 beach_21: -929699498
+      Mission 1 beach_22: -2023859224
+      Mission 1 beach_23: -1433031675
+      Mission 1 beach_24: -1437346351
+      Mission 1 beach_25: 2020809839
+      Mission 1 beach_26: -519455352
+      Mission 1 beach_27: -1867087434
+      Mission 1 beach_28: 78849222
+      Mission 1 beach_29: 878658823
+      Mission 1 beach_3: -90680923
+      Mission 1 beach_30: 1795447052
+      Mission 1 beach_31: -305869987
+      Mission 1 beach_32: -1748285053
+      Mission 1 beach_33: -1046041534
+      Mission 1 beach_34: 1553803515
+      Mission 1 beach_35: -738614702
+      Mission 1 beach_4: -179462181
+      Mission 1 beach_5: 688790921
+      Mission 1 beach_6: -1706909206
+      Mission 1 beach_7: 443585773
+      Mission 1 beach_8: 2026445912
+      Mission 1 beach_9: -1182600409
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
