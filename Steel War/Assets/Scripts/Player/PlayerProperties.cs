@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +15,7 @@ public class PlayerProperties : MonoBehaviour
     private void OnValidate()
     {
         if (!gameState) { gameState = GameObject.Find("GameState").GetComponent<GameState>(); }
-        //if (!hpController) { hpController = GameObject.Find("Canvas Manager").GetComponent<HpController>(); }
+        //if (!hpController) { hpController = GameObject.Find("Canvas").GetComponent<HpController>(); }
         if (!bulletUI) { bulletUI = GameObject.Find("Bullet Text TMP").GetComponent<TextMeshProUGUI>(); }
         if (!weaponImageDisplayUI) { weaponImageDisplayUI = GameObject.Find("Weapon Image Display").GetComponent<Image>(); }
         
@@ -45,6 +44,34 @@ public class PlayerProperties : MonoBehaviour
     public int maxHP = 4;
     public int points = 0;
 
+    // Action Parameters
+    [Range(1.0f, 5.0f)]
+    public float playerSpeed = 1f;
+    [Range(1.0f, 20.0f)]
+    public float playerJumpForce = 12f;
+    [Range(1, 2)]
+    public int maxJumps = 1;
+    [Range(0.0f, 5.0f)]
+    public float melleAttackDistance = 5.0f;
+    [Range(0.0f, 5.0f)]
+    public float melleAttackDuration = 1.51f;
+    [Range(0.0f, 5.0f)]
+    public float startBulletDistance = 1.0f;
+    [Range(3.0f, 100.0f)]
+    public float bulletAttackDuration = 85.0f;
+    [Range(0.0f, 10.0f)]
+    public float bulletVelocity = 10.0f;
+
+    // Control action logic
+    public bool shouldSubtractAmmo = false;
+    public int remainingJumps;
+
+    void Start()
+    {
+        remainingJumps = maxJumps;
+        HoldOtherWeapon(0);
+    }
+
     // Take Damage Logic ////////////////////////////////////////////////
     private void OnTriggerStay(Collider other)
     {
@@ -72,7 +99,7 @@ public class PlayerProperties : MonoBehaviour
 
     // Setters ////////////////////////////////////////////////
 
-    public void Hold(int newIndex)
+    public void HoldOtherWeapon(int newIndex)
     {
         this.weaponProps = weapons[newIndex].GetComponent<WeaponProperties>().weaponScriptable;
         weapons[currentWeaponIndex].SetActive(false);

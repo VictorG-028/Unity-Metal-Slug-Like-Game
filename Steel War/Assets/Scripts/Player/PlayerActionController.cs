@@ -1,58 +1,49 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Search;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.UIElements;
-using UnityEditor;
 
 public class PlayerActionController : MonoBehaviour
 {
-    [SerializeField] private GameObject player = null;
-    [SerializeField] Animator animator = null;
-    [SerializeField] PlayerProperties playerProps = null;
-    [SerializeField] Camera mainCamera = null;
-    //[SerializeField] ParticleSystem gunShotEffect = null; // TODO: criar gameObject do efeito do tiro
-    //[SerializeField] GameObject gunShotGO = null;
-    [SerializeField] Sprite bulletSprite = null;
-
-
-    // Parameters
-    [Range(0.0f, 5.0f)]
-    [SerializeField] float melleAttackDistance = 5.0f;
-    [Range(0.0f, 5.0f)]
-    [SerializeField] float melleAttackDuration = 1.51f;
-    [Range(0.0f, 5.0f)]
-    [SerializeField] float startBulletDistance = 1.0f;
-    [Range(3.0f, 100.0f)]
-    [SerializeField] float bulletAttackDuration = 85.0f;
-    [Range(0.0f, 10.0f)]
-    [SerializeField] float bulletVelocity = 10.0f;
-
-    // Control
-    private bool shouldSubtractAmmo = false;
-
+    [SerializeField] private Transform playerTransform = null;
+    [SerializeField] Rigidbody2D playerRigidyBody      = null;
+    [SerializeField] Animator playerAnimator           = null;
+    [SerializeField] PlayerProperties playerProps      = null;
+    [SerializeField] Camera mainCamera                 = null;
+    [SerializeField] ParticleSystem gunShotEffect      = null;
+    [SerializeField] GameObject gunShotGO              = null;
+    [SerializeField] Sprite bulletSprite               = null;
 
     void OnValidate()
     {
-        if (!player) { player = GameObject.Find("Player"); }
-        if (!animator) { animator = gameObject.GetComponent<Animator>(); }
-        if (!playerProps) { playerProps = gameObject.GetComponent<PlayerProperties>(); }
+        if (!playerTransform) { playerTransform = GameObject.Find("Player").GetOrAddComponent<Transform>(); }
+        if (!playerRigidyBody) { playerRigidyBody = GameObject.Find("Player").GetComponent<Rigidbody2D>(); }
+        if (!playerAnimator) { playerAnimator = GameObject.Find("Player").GetComponent<Animator>(); }
+        if (!playerProps) { playerProps = GameObject.Find("Player").GetComponent<PlayerProperties>(); }
         if (!mainCamera) { mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>(); }
-        //if (!gunShotEffect) { gunShotEffect = GameObject.Find("Gun Shot Effect").GetComponent<ParticleSystem>(); }
-        //if (!gunShotGO) { gunShotGO = GameObject.Find("Sword Slash Effect"); }
+        if (!gunShotEffect) { gunShotEffect = GameObject.Find("Gun Shot Effect").GetComponent<ParticleSystem>(); }
+        if (!gunShotGO) { gunShotGO = GameObject.Find("Gun Point"); }
         if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("TODO"); }
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        applyMovementForce();
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (playerProps.remainingJumps > 0 && playerProps.canJump)
+            { 
+                playerRigidyBody.AddForce(new Vector2(0f, playerProps.playerJumpForce), ForceMode2D.Impulse);
+                playerProps.remainingJumps--; // Decrementa o número de pulos restantes
+            }
+        }
+        else if (Input.GetMouseButtonDown(0))
         {
             if (playerProps.canAttack && (playerProps.weaponProps.currentAmmo > 0 || playerProps.isUsingPistolOrKnife))
             {
-                shouldSubtractAmmo = !playerProps.isUsingPistolOrKnife;
+                playerProps.shouldSubtractAmmo = !playerProps.isUsingPistolOrKnife;
                 print("Atirou");
-                ShootBullet(shouldSubtractAmmo);
+                ShootBullet(playerProps.shouldSubtractAmmo);
             }
 
         } 
@@ -66,18 +57,35 @@ public class PlayerActionController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Z))
         {
-            playerProps.Hold(0); // Troca para faca
+            playerProps.HoldOtherWeapon(0); // Troca para faca
             playerProps.isUsingPistolOrKnife = true;
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            playerProps.Hold(1); // Troca para pistola
+            playerProps.HoldOtherWeapon(1); // Troca para pistola
             playerProps.isUsingPistolOrKnife = true;
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            playerProps.Hold(2); // Troca para AK-47
+            playerProps.HoldOtherWeapon(2); // Troca para AK-47
             playerProps.isUsingPistolOrKnife = false;
+        }
+    }
+
+    void applyMovementForce()
+    {
+        if (playerProps.canMove) {
+            Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
+            transform.position += movement * Time.fixedDeltaTime * playerProps.playerSpeed;
+        }
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.contacts[0].normal.y > 0.5f) // Verifica se colidiu com o chão
+        {
+            playerProps.remainingJumps = playerProps.maxJumps; // Reseta o número de pulos ao tocar o chão
         }
     }
 
@@ -92,7 +100,7 @@ public class PlayerActionController : MonoBehaviour
         Vector3 lookDirection = CalculateLookDirection();
         GameObject colliderObject = new("MelleCollider") { tag = "Attack" };
         colliderObject.transform.forward = lookDirection;
-        colliderObject.transform.position = transform.position + lookDirection * melleAttackDistance;
+        colliderObject.transform.position = transform.position + lookDirection * playerProps.melleAttackDistance;
         BoxCollider2D collider = colliderObject.AddComponent<BoxCollider2D>(); // Adiciona um Collider
         collider.size = new Vector2(0.5f, 2.0f); // Largura, Altura
         collider.isTrigger = true;
@@ -102,7 +110,7 @@ public class PlayerActionController : MonoBehaviour
         attackBehaviour.damage = playerProps.weaponProps.damage;
 
         StartCoroutine(canAttackAfterDelay(1.5f));
-        Destroy(colliderObject, melleAttackDuration); // Destroi o Collider ap�s o tempo de ataque
+        Destroy(colliderObject, playerProps.melleAttackDuration); // Destroi o Collider ap�s o tempo de ataque
     }
 
     private void ShootBullet(bool shouldSubtractAmmo)
@@ -119,7 +127,7 @@ public class PlayerActionController : MonoBehaviour
         Vector3 lookDirection = CalculateLookDirection();
 
         GameObject bulletObject = new("Bullet") { tag = "Attack" };
-        bulletObject.transform.position = transform.position + lookDirection * startBulletDistance;
+        bulletObject.transform.position = transform.position + lookDirection * playerProps.startBulletDistance;
 
         // Adiciona um sprite renderer com um sprite
         SpriteRenderer spriteRenderer = bulletObject.AddComponent<SpriteRenderer>();
@@ -133,7 +141,7 @@ public class PlayerActionController : MonoBehaviour
         collider.isTrigger = true;
         Rigidbody2D rigidbody = bulletObject.AddComponent<Rigidbody2D>();
         rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        rigidbody.velocity = lookDirection * bulletVelocity;
+        rigidbody.velocity = lookDirection * playerProps.bulletVelocity;
         rigidbody.gravityScale = 0;
         //rigidbody.simulated = true;
 
@@ -150,7 +158,7 @@ public class PlayerActionController : MonoBehaviour
     private Vector3 CalculateLookDirection()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 direction = (mousePosition - player.transform.position).normalized;
+        Vector3 direction = (mousePosition - playerTransform.position).normalized;
         direction.z = 1; // Previne bug que faz a bala andar para trás do cenário
         //print(direction);
         return direction;
@@ -159,12 +167,12 @@ public class PlayerActionController : MonoBehaviour
     private IEnumerator MoveBullet(GameObject movingObject)
     {
         float timer = 0f;
-        while (timer < bulletAttackDuration)
+        while (timer < playerProps.bulletAttackDuration)
         {
             if (movingObject == null)
                 yield break; // Sai da coroutine se o objeto Bullet for destruído prematuramente
 
-            movingObject.transform.position += bulletVelocity * Time.deltaTime * movingObject.transform.forward;
+            movingObject.transform.position += playerProps.bulletVelocity * Time.deltaTime * movingObject.transform.forward;
             timer += Time.deltaTime;
             yield return null; // Aguarda um frame
         }
