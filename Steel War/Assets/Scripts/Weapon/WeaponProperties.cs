@@ -1,17 +1,29 @@
 using UnityEngine;
 public class WeaponProperties : MonoBehaviour
 {
-    public string weaponName                  = "NewWeapon"; // Must be same name as fileName to auto load
-    public int damage                         = 1;
-    public int baseMaxAmmo                    = 0;
-    public int currentAmmo                    = 0;
-    public Sprite weaponIcon                  = null;
-    //public Sprite aim                       = null; // TODO trazer prop aim do script aim para esse arquivo
-    public WeaponScriptable weaponScriptable = null;
+    public Transform handlePoint = null; // Expect an child GameObject
+    public Transform barrelPoint = null; // Expect an child GameObject
+    public WeaponScriptable weaponScriptable  = null;
+
+    private void Awake()
+    {
+        if (transform.childCount != 2)
+        {
+            string msg = $"The GameObject {this.name} with {this.GetType()} script must have exactly 2 child empties to define handle and barrel points.";
+            throw new System.Exception(msg);
+        }
+    }
 
     private void OnValidate()
     {
-        //if (!weaponIcon) { weaponIcon = } // TODO: Load any "broken" weapon sprite here
-        //if (!weaponScriptable) { weaponScriptable = GameObject.Find("TODO"); }
+        if (handlePoint == null && transform.GetChild(0))
+        {
+            handlePoint = transform.GetChild(0);
+            
+        }
+        if (barrelPoint == null && transform.GetChild(1))
+        {
+            barrelPoint = transform.GetChild(1);
+        }
     }
 }

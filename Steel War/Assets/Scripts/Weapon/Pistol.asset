@@ -16,5 +16,6 @@ MonoBehaviour:
   damage: 1
   baseMaxAmmo: -1
   currentAmmo: -1
-  weaponIcon: {fileID: 21300000, guid: bfe898ea62a50a04cbe701b32ba13e20, type: 3}
+  sprite: {fileID: 21300000, guid: 092999ff1dab6f847b5ca5e6fab2a739, type: 3}
+  cursor: {fileID: 2800000, guid: f58972b6cfcfecf4885486a5c75ab745, type: 3}
   weaponPrefab: {fileID: 101876725576134488, guid: 0b14a1f63c04fda4da6159aed236fe64, type: 3}
