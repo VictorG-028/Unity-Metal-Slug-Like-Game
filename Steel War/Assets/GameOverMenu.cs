@@ -28,6 +28,11 @@ public class GameOverMenu : MonoBehaviour
         
     }
 
+    public void VoltarMainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
+
     public void SairJogo()
     {
         Application.Quit();
