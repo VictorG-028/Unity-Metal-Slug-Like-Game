@@ -11,6 +11,7 @@ public class GameState : MonoBehaviour
     [SerializeField] PlayerProperties playerProps = null;
     [SerializeField] Vector3 startPosition = Vector3.zero;
     [SerializeField] TextMeshProUGUI pauseText = null;
+ 
 
     private void OnValidate()
     {
@@ -18,6 +19,12 @@ public class GameState : MonoBehaviour
         if (!playerProps) { playerProps = player.GetComponent<PlayerProperties>(); }
         if (startPosition == Vector3.zero) { startPosition = player.transform.position; }
         if (!pauseText) { pauseText = GameObject.Find("Pause Text TMP").GetComponent<TextMeshProUGUI>(); }
+    }
+
+    private void Start()
+    {
+        //acessa variavel static para manipulacao das fases e atualiza fase atual
+        GameStateStatic.currentLevel = "stage_1";
     }
 
     void Update()
