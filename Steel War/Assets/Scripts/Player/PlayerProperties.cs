@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class PlayerProperties : MonoBehaviour
 {
     [SerializeField] GameState gameState = null;
-    //[SerializeField] HpController hpController = null;
+    [SerializeField] HpController hpController = null;
     [SerializeField] Animator playerAnimator = null;
     [SerializeField] Collider2D playerCollider = null;
     [SerializeField] SpriteRenderer playerSpriteRenderer = null;
@@ -30,7 +30,7 @@ public class PlayerProperties : MonoBehaviour
     private void OnValidate()
     {
         if (!gameState) { gameState = GameObject.Find("GameState").GetComponent<GameState>(); }
-        //if (!hpController) { hpController = GameObject.Find("Canvas").GetComponent<HpController>(); }
+        if (!hpController) { hpController = GameObject.Find("Canvas").GetComponent<HpController>(); }
         if (!playerAnimator) { playerAnimator = GameObject.Find("Player").GetComponent<Animator>(); }
         if (!playerCollider) { playerCollider = GameObject.Find("Player").GetComponent<Collider2D>(); }
         if (!playerSpriteRenderer) { playerSpriteRenderer = GameObject.Find("Player").GetComponent<SpriteRenderer>(); }
@@ -157,9 +157,9 @@ public class PlayerProperties : MonoBehaviour
         if (other.CompareTag("Enemy") && !iFrame)
         {
             HP -= 1;
-            //hpController.UpdatePlayerUI(); // TODO
+            hpController.UpdatePlayerUI();
             Debug.Log($"O inimigo atacou o jogador! {HP}/{maxHP}");
-            
+
             if (HP == 0)
             {
                 gameState.Restart();

@@ -7,6 +7,7 @@ TagManager:
   - Attack
   - Enemy
   - Holdable Weapon
+  - HealthBar
   layers:
   - Default
   - TransparentFX

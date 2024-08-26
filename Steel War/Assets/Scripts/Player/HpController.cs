@@ -12,15 +12,15 @@ public class HpController : MonoBehaviour
     private void OnValidate()
     {
         if (!playerProps) { playerProps = GameObject.Find("Player").GetComponent<PlayerProperties>(); }
-        // TODO: Criar os Health UI Container (GameObject) na cena contendo as barras de vida como GameObject filhos
+
         if (containers == null || containers.Length == 0)
         {
-            containers = GameObject.FindGameObjectsWithTag("Health UI Container")
-                                   .Select(x => x.GetComponent<Image>()).ToArray();
+            containers = GameObject.FindGameObjectsWithTag("HealthBar")
+                                .Select(x => x.GetComponent<Image>()).ToArray();
         }
-        // TODO: fazer essas linhas carregarem automaticamente as sprites
-        if (!emptyBar) { emptyBar = Resources.Load<Sprite>("TODO"); }
-        if (!fullBar) { fullBar = Resources.Load<Sprite>("TODO"); }
+
+        if (!emptyBar) { emptyBar = Resources.Load<Sprite>("Assets/Sprites/EmptyBar.png"); }
+        if (!fullBar) { fullBar = Resources.Load<Sprite>("Assets/Sprites/FullBar.png"); } 
     }
 
     void Start()
