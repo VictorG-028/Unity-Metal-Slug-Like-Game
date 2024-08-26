@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour
 {
-    private GameObject objetoParaSpawnar;
+    public GameObject objetoParaSpawnar;
  
     void OnCollisionEnter2D(Collision2D collision)
     {

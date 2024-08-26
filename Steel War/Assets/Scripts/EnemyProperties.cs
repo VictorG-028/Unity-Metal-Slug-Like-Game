@@ -20,7 +20,7 @@ public class EnemyProperties : MonoBehaviour
     public int currentHP = 2;
     public int pointsGiven = 5;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         //Debug.Log($"Collider {other} entrou no colider do {enemyName}");
         if (other.CompareTag("Attack"))
