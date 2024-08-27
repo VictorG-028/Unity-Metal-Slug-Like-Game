@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -23,8 +21,7 @@ public class LevelsMenu : MonoBehaviour
     
     public void OpenLevel(int levelId)
     {
-        //string levelName = "Level" + levelId;
-        string levelName = "TestingGunMechanic";
+        string levelName = "Stage_" + levelId;
         SceneManager.LoadScene(levelName);
     }
 }

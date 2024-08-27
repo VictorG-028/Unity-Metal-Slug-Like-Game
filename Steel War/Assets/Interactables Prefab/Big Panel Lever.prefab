@@ -131,7 +131,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.88}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!198 &4868897164430416734
 ParticleSystem:
@@ -4868,7 +4868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdf8adf62ec153d4e9c601cd95857dfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider2D: {fileID: 6679192934624439930}
+  collider_2D: {fileID: 6679192934624439930}
   spriteRenderer: {fileID: 6035880328649783544}
   turnedOffSprite: {fileID: -2028019737, guid: f2d52ab84d797594fac36986e76b0874, type: 3}
   turnedOnSprite: {fileID: -112523410, guid: f2d52ab84d797594fac36986e76b0874, type: 3}

@@ -43,7 +43,7 @@ public class Aim : MonoBehaviour
             armTransform.localPosition = new Vector3(
                 armTransform.localPosition.x,
                 armTransform.localPosition.y,
-                2
+                Mathf.Abs(armTransform.localPosition.z)
             );
             armTransform.localRotation = Quaternion.Euler(
                 180.0f, 
@@ -68,7 +68,7 @@ public class Aim : MonoBehaviour
             armTransform.localPosition = new Vector3(
                 armTransform.localPosition.x,
                 armTransform.localPosition.y, 
-                -2
+                -Mathf.Abs(armTransform.localPosition.z)
             );
             armTransform.localRotation = Quaternion.Euler(
                 0.0f,
@@ -100,7 +100,7 @@ public class Aim : MonoBehaviour
 
     private void ChangeArmXPosition(float newLocalX)
     {
-        // Explanation of code below
+        // Explanation of local coordinates
         // P = Player pivot point
         // x = origional x local position
         // width = player sprite width
@@ -110,6 +110,7 @@ public class Aim : MonoBehaviour
         // Objetive 2: find x for all starting x'
 
         // If P is on the left {
+        //
         // P      
         // 0   x     x' width 
         // |---|-----|---|
@@ -122,6 +123,7 @@ public class Aim : MonoBehaviour
         // }
 
         // If P is on the center {
+        //
         //               P      
         // -width/2  -x  0  x' width/2 
         //        |---|--|--|---|

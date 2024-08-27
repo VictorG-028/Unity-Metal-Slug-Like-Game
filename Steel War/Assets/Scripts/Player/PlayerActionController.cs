@@ -7,8 +7,8 @@ public class PlayerActionController : MonoBehaviour
     [SerializeField] Rigidbody2D playerRigidyBody      = null;
     [SerializeField] Animator playerAnimator           = null;
     [SerializeField] PlayerProperties playerProps      = null;
-    [SerializeField] Camera mainCamera                 = null;
-    [SerializeField] ParticleSystem gunShotEffect      = null;
+    //[SerializeField] Camera mainCamera                 = null;
+    //[SerializeField] ParticleSystem gunShotEffect      = null;
     [SerializeField] GameObject gunShotGO              = null;
     [SerializeField] Sprite bulletSprite               = null;
     [SerializeField] Transform armTransform            = null;
@@ -28,8 +28,8 @@ public class PlayerActionController : MonoBehaviour
         if (!playerRigidyBody) { playerRigidyBody = GameObject.Find("Player").GetComponent<Rigidbody2D>(); }
         if (!playerAnimator) { playerAnimator = GameObject.Find("Player").GetComponent<Animator>(); }
         if (!playerProps) { playerProps = GameObject.Find("Player").GetComponent<PlayerProperties>(); }
-        if (!mainCamera) { mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>(); }
-        if (!gunShotEffect) { gunShotEffect = GameObject.Find("Gun Shot Effect").GetComponent<ParticleSystem>(); }
+        //if (!mainCamera) { mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>(); }
+        //if (!gunShotEffect) { gunShotEffect = GameObject.Find("Gun Shot Effect").GetComponent<ParticleSystem>(); }
         if (!gunShotGO) { gunShotGO = GameObject.Find("Gun Point"); }
         if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("TODO"); }
         if (!armTransform) { armTransform = GameObject.FindGameObjectWithTag("Player Arm").transform; }
@@ -66,7 +66,6 @@ public class PlayerActionController : MonoBehaviour
         horizontalSpeed = Input.GetAxis("Horizontal");
         playerAnimator.SetFloat("horizontalSpeed", Mathf.Abs(horizontalSpeed));
 
-
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
         {
             if (playerProps.canMove)
@@ -85,7 +84,7 @@ public class PlayerActionController : MonoBehaviour
                 playerAnimator.SetBool("isJumping", false);
                 playerAnimator.SetBool("isRunning", false);
 
-                // TODO - colocar o código de descer de plataforma aqui
+                // TODO - movar código do script PlatformCollision para aqui
             }
         }
         else if (Input.GetButtonDown("Jump") && Input.GetKeyDown(KeyCode.W))
@@ -97,6 +96,9 @@ public class PlayerActionController : MonoBehaviour
 
                 playerRigidyBody.AddForce(new Vector2(0f, playerProps.playerJumpForce), ForceMode2D.Impulse);
                 playerProps.remainingJumps--; // Decrementa o número de pulos restantes
+                playerProps.isOnGround = false;
+                playerProps.canJump = false;
+                StartCoroutine(DelayedCheckOnGround(0.2f));
             }
         }
         else if (Input.GetMouseButtonDown(0))
@@ -132,6 +134,11 @@ public class PlayerActionController : MonoBehaviour
             playerProps.HoldOtherWeapon(2); // Troca para AK-47
             playerProps.isUsingPistolOrKnife = false;
         }
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            playerProps.HoldOtherWeapon(3); // Troca para shotgun
+            playerProps.isUsingPistolOrKnife = false;
+        }
     }
 
 
@@ -146,9 +153,6 @@ public class PlayerActionController : MonoBehaviour
     private void MelleAttack()
     {
         playerProps.canAttack = false;
-        // TODO: Play melle Visual Effect
-        // gunShotGO must be positioned on the gun end
-        //gunShotEffect.Play();
         playerAnimator.SetBool("isUsingKnife", true);
         armTransform.gameObject.SetActive(false);
 
@@ -165,7 +169,7 @@ public class PlayerActionController : MonoBehaviour
         AttackBehaviour attackBehaviour = colliderObject.AddComponent<AttackBehaviour>();
         attackBehaviour.damage = playerProps.GetHoldingWeaponDamage;
 
-        StartCoroutine(CanAttackAfterDelay(1.5f));
+        StartCoroutine(CanAttackAfterDelay(playerProps.melleAttackDuration));
         Destroy(colliderObject, playerProps.melleAttackDuration); // Destroi o Collider ap�s o tempo de ataque
     }
 
@@ -209,6 +213,7 @@ public class PlayerActionController : MonoBehaviour
 
         StartCoroutine(CanAttackAfterDelay(0.5f));
         //StartCoroutine(MoveBullet(bulletObject));
+        Destroy(bulletObject, playerProps.bulletAttackDuration);
     }
 
     // Utils ////////////////////////////////////////////////
@@ -235,6 +240,26 @@ public class PlayerActionController : MonoBehaviour
             yield return null; // Aguarda um frame
         }
         Destroy(movingObject);
+    }
+
+    private IEnumerator DelayedCheckOnGround(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        bool onGround;
+        while (true)
+        {
+            onGround = playerProps.CheckIsOnGround();
+
+            if (onGround) // Se o jogador estiver no chão, saímos do loop
+            {
+                playerProps.OnLanding();
+                yield break; // Encerra a coroutine
+            }
+
+            // Aguardamos até o próximo frame para continuar a verificar
+            yield return null;
+        }
     }
 
     private IEnumerator CanAttackAfterDelay(float delay)

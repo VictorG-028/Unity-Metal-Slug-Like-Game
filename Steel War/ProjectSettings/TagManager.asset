@@ -7,6 +7,8 @@ TagManager:
   - Attack
   - Enemy
   - Holdable Weapon
+  - OneWayPlatform
+  - Points
   layers:
   - Default
   - TransparentFX

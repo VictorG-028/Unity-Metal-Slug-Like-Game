@@ -10,7 +10,7 @@ using UnityEngine;
 [RequireComponent(typeof(ParticleSystem))]
 public class Interactable : MonoBehaviour, IInteractable
 {
-    [SerializeField] Collider2D collider2D = null;
+    [SerializeField] Collider2D collider_2D = null;
     [SerializeField] SpriteRenderer spriteRenderer = null;
     [SerializeField] Sprite turnedOffSprite = null;
     [SerializeField] Sprite turnedOnSprite = null;
@@ -33,41 +33,40 @@ public class Interactable : MonoBehaviour, IInteractable
 
     private void OnValidate()
     {
-        if (!collider2D) { collider2D = GetComponent<Collider2D>(); }
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (!collider_2D) { collider_2D = GetComponent<Collider2D>(); }
         if (!spriteRenderer) { spriteRenderer = GetComponent<SpriteRenderer>(); }
+        //if (!turnedOnSprite && !turnedOffSprite)
+        //{
+        //    string[] spriteNames = {
+        //        "interactables_panel_unpressed",
+        //        "interactables_panel_pressed"
+        //    };
+        //    Sprite[] loadedSprites = loadSpritesOnValidate(
+        //        "Assets/Sprites/Interactables/interactables.png",
+        //        spriteNames
+        //    );
 
-        //if (!turnedOffSprite) { turnedOffSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Interactables/interactable_small_panels.png"); }
-        //if (!turnedOnSprite) { turnedOnSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Interactables/interactable_small_panels.png");  }
-        if (!turnedOnSprite && !turnedOffSprite)
-        {
-            string[] spriteNames = {
-                "interactables_panel_unpressed",
-                "interactables_panel_pressed"
-            };
-            Sprite[] loadedSprites = loadSpritesOnValidate(
-                "Assets/Sprites/Interactables/interactables.png",
-                spriteNames
-            );
+        //    turnedOffSprite = loadedSprites[0];
+        //    turnedOnSprite = loadedSprites[1];
+        //}
+        //if (!outlinedTurnedOffSprite && !outlinedTurnedOnSprite)
+        //{
+        //    string[] outlinedSpriteNames = {
+        //        "outlined_interactables_panel_unpressed",
+        //        "outlined_interactables_panel_pressed"
+        //    };
+        //    Sprite[] loadedSprites = loadSpritesOnValidate(
+        //        "Assets/Sprites/Interactables/outlined_interactables.png",
+        //        outlinedSpriteNames
+        //    );
 
-            turnedOffSprite = loadedSprites[0];
-            turnedOnSprite = loadedSprites[1];
-        }
-        if (!outlinedTurnedOffSprite && !outlinedTurnedOnSprite)
-        {
-            string[] outlinedSpriteNames = {
-                "outlined_interactables_panel_unpressed",
-                "outlined_interactables_panel_pressed"
-            };
-            Sprite[] loadedSprites = loadSpritesOnValidate(
-                "Assets/Sprites/Interactables/outlined_interactables.png",
-                outlinedSpriteNames
-            );
-
-            outlinedTurnedOffSprite = loadedSprites[0];
-            outlinedTurnedOnSprite = loadedSprites[1];
-        }
-        if (!playerProps) { playerProps = GameObject.Find("Player").GetComponent<PlayerProperties>(); }
-        if (!hoverCursor) { hoverCursor = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/UI/can_interact_cursor.png"); }
+        //    outlinedTurnedOffSprite = loadedSprites[0];
+        //    outlinedTurnedOnSprite = loadedSprites[1];
+        //}
+        if (!playerProps && player) { playerProps = player.GetComponent<PlayerProperties>(); }
+        //if (!hoverCursor) { hoverCursor = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/UI/can_interact_cursor.png"); }
         if (!highlightEffect) { highlightEffect = GetComponent<ParticleSystem>(); }
     }
 
@@ -84,14 +83,24 @@ public class Interactable : MonoBehaviour, IInteractable
             );
         }
 
-        collider2D.isTrigger = true; // Collider must be trigger
+        collider_2D.isTrigger = true; // Collider must be trigger
     }
 
     // Get & Set /////////////////////////////////////////////
     public bool IsTurnedOn
     {
         get { return isTurnedOn; }
-        set { isTurnedOn = value; }
+        set
+        {
+            if (isTurnedOn != value)
+            {
+                isTurnedOn = value;
+                MakeSpriteMatchInternalState();
+
+                // Notificar os inscritos sobre a mudança de estado
+                OnStateChanged?.Invoke(isTurnedOn);
+            }
+        }
     }
 
     // Implements interface /////////////////////////////////////////////
@@ -100,8 +109,7 @@ public class Interactable : MonoBehaviour, IInteractable
     {
         if (isTurnedOn) { return; }
 
-        isTurnedOn = true;
-        MakeSpriteMatchInternalState();
+        IsTurnedOn = true;
     }
 
     public bool CanInteractRestriction()
@@ -125,7 +133,7 @@ public class Interactable : MonoBehaviour, IInteractable
 
     private void OnMouseEnter()
     {
-        print($"mouse hover entrou em {this.name}");
+        //print($"mouse hover entrou em {this.name}");
         hasMouseHovering = true;
 
         if (disableAttackWhenHover)
@@ -138,7 +146,7 @@ public class Interactable : MonoBehaviour, IInteractable
 
     private void OnMouseExit()
     {
-        print($"mouse hover saiu de {this.name}");
+        //print($"mouse hover saiu de {this.name}");
         hasMouseHovering = false;
 
         if (disableAttackWhenHover)
@@ -151,7 +159,7 @@ public class Interactable : MonoBehaviour, IInteractable
 
     private void OnMouseDown()
     {
-        print($"mouse clicou em {this.name}");
+        print($"mouse clicou em {this.name} isTurnedOn antes é {isTurnedOn} e depois é {!isTurnedOn}");
         OnInteract();
     }
 
@@ -159,8 +167,7 @@ public class Interactable : MonoBehaviour, IInteractable
 
     private void ToggleONOff()
     {
-        isTurnedOn = !isTurnedOn;
-        MakeSpriteMatchInternalState();
+        IsTurnedOn = !isTurnedOn;
     }
 
     private void MakeSpriteMatchInternalState()
@@ -191,25 +198,25 @@ public class Interactable : MonoBehaviour, IInteractable
         }
     }
 
-    private Sprite[] loadSpritesOnValidate(string assetPath, string[] spriteNames)
-    {
-        Dictionary<string, int> spriteNameToIndex = enumerate(spriteNames);
-        Sprite[] sprites = new Sprite[spriteNames.Length];
-        Object[] loadedSprites = AssetDatabase.LoadAllAssetRepresentationsAtPath(assetPath);
+    //private Sprite[] loadSpritesOnValidate(string assetPath, string[] spriteNames)
+    //{
+    //    Dictionary<string, int> spriteNameToIndex = enumerate(spriteNames);
+    //    Sprite[] sprites = new Sprite[spriteNames.Length];
+    //    UnityEngine.Object[] loadedSprites = AssetDatabase.LoadAllAssetRepresentationsAtPath(assetPath);
 
-        foreach (Object obj in loadedSprites)
-        {
-            if (spriteNameToIndex.Count == 0) break;
+    //    foreach (UnityEngine.Object obj in loadedSprites)
+    //    {
+    //        if (spriteNameToIndex.Count == 0) break;
 
-            if (obj is Sprite sprite && spriteNameToIndex.TryGetValue(sprite.name, out int index))
-            {
-                sprites[index] = sprite;
-                spriteNameToIndex.Remove(sprite.name);
-            }
-        }
+    //        if (obj is Sprite sprite && spriteNameToIndex.TryGetValue(sprite.name, out int index))
+    //        {
+    //            sprites[index] = sprite;
+    //            spriteNameToIndex.Remove(sprite.name);
+    //        }
+    //    }
 
-        return sprites;
-    }
+    //    return sprites;
+    //}
 
     private Dictionary<string, int> enumerate(string[] names)
     {

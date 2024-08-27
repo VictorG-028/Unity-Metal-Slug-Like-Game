@@ -44,6 +44,6 @@ public class GameState : MonoBehaviour
     public void Restart()
     {
         // Go To Death Screen Scene
-        //SceneManager.LoadScene(2); // TODO: fazer cena de morte com botão de restart
+        SceneManager.LoadScene("Game_Over");
     }
 }

@@ -29,11 +29,14 @@ public class PlayerProperties : MonoBehaviour
 
     private void OnValidate()
     {
-        if (!gameState) { gameState = GameObject.Find("GameState").GetComponent<GameState>(); }
+        GameObject gameStateObj = GameObject.Find("GameState");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (!gameState && gameStateObj) { gameState = gameStateObj.GetComponent<GameState>(); }
         //if (!hpController) { hpController = GameObject.Find("Canvas").GetComponent<HpController>(); }
-        if (!playerAnimator) { playerAnimator = GameObject.Find("Player").GetComponent<Animator>(); }
-        if (!playerCollider) { playerCollider = GameObject.Find("Player").GetComponent<Collider2D>(); }
-        if (!playerSpriteRenderer) { playerSpriteRenderer = GameObject.Find("Player").GetComponent<SpriteRenderer>(); }
+        if (!playerAnimator && player) { playerAnimator = player.GetComponent<Animator>(); }
+        if (!playerCollider && player) { playerCollider = player.GetComponent<Collider2D>(); }
+        if (!playerSpriteRenderer && player) { playerSpriteRenderer = player.GetComponent<SpriteRenderer>(); }
         if (!bulletUI) { bulletUI = GameObject.Find("Bullet Text TMP").GetComponent<TextMeshProUGUI>(); }
         if (!weaponImageDisplayUI) { weaponImageDisplayUI = GameObject.Find("Weapon Image Display").GetComponent<Image>(); }
         if (!weaponTransform) { weaponTransform = GameObject.Find("Weapon").GetComponent<Transform>(); }
@@ -46,7 +49,7 @@ public class PlayerProperties : MonoBehaviour
             groundLayers[0] = LayerMask.GetMask("OneWayPlatform");
             groundLayers[1] = LayerMask.GetMask("SolidGround");
         }
-        if (OnLandEvent == null) { OnLandEvent = new UnityEvent(); }
+        OnLandEvent ??= new UnityEvent();
         if (!bottomCenterPoint) { bottomCenterPoint = GameObject.Find("Player Bottom Center Point").transform; }
     }
 
@@ -62,20 +65,18 @@ public class PlayerProperties : MonoBehaviour
     public bool isAimingToTheRightSide = true;
     public bool HasAmmo => holdingWeaponProps.weaponScriptable.currentAmmo > 0;
     public int GetHoldingWeaponDamage => holdingWeaponProps.weaponScriptable.damage;
-    public Vector2 GetHoldingWeaponCursorSize => holdingWeaponProps.weaponScriptable.cursor.Size();
+    public Vector2 GetHoldingWeaponCursorSize => new(holdingWeaponProps.weaponScriptable.cursor.width, holdingWeaponProps.weaponScriptable.cursor.height);
     public Texture2D GetCursor => holdingWeaponProps.weaponScriptable.cursor;
     public Transform GetGunBarrelPoint => holdingWeaponProps.barrelPoint;
     public Transform GetGunHandlePoint => holdingWeaponProps.handlePoint;
-    //public bool IsOnGround => ; // TODO trazer lógica do playerActionController para esse script e retornar a caracteristica nesse lambda
+    public LayerMask[] GetGroundLayers => groundLayers;
     public bool isOnGround = true;
     public bool wasGrounded = false;
 
     // Special properties
     public bool iFrame = false;
-    //public WeaponProperties holdingWeaponProps = null;
-    //public WeaponScriptable holdingWeaponScriptableProps = null;
-    //public GameObject holdingWeapon = null;
     private int currentWeaponIndex = 0;
+    public GameObject currentPlatform = null;
     //public string assetPath = "Weapons/{0}.asset"; // Caminho para os ScriptableObjects
 
     // Stats
@@ -84,10 +85,8 @@ public class PlayerProperties : MonoBehaviour
     public int points = 0;
 
     // Action Parameters
-    //[Range(5.0f, 10.0f)] public float playerSpeed            = 3f;
-   public float playerSpeed = 3f;
-    //[Range(7.0f, 20.0f)] public float playerJumpForce       = 6.0f;
-   public float playerJumpForce = 7.0f;
+    [Range(0.0f, 10.0f)] public float playerSpeed           = 3f;
+    [Range(0.0f, 20.0f)] public float playerJumpForce       = 6.5f;
     [Range(1, 2)] public int maxJumps                       = 1;
     [Range(0.0f, 5.0f)] public float melleAttackDistance    = 5.0f;
     [Range(0.0f, 5.0f)] public float melleAttackDuration    = 1.51f;
@@ -105,58 +104,35 @@ public class PlayerProperties : MonoBehaviour
         HoldOtherWeapon(0);
     }
 
-    private void FixedUpdate()
-    {
-        // Example of code to check if is on ground -> https://github.com/Brackeys/2D-Character-Controller/blob/master/CharacterController2D.cs
-        wasGrounded = isOnGround;
-        isOnGround = false;
-        for (int i = 0; i < groundLayers.Length; i++)
-        {
-            isOnGround = playerCollider.IsTouchingLayers(groundLayers[i]);
-            if (isOnGround && !wasGrounded)
-            {
-                //OnLandEvent.Invoke();
-                OnLanding();
-            }
-            if (isOnGround)
-            {
-                break;
-            }
-        }
-
-        //Vector3 scanPoint = new Vector3(
-        //    transform.position.x,
-        //    transform.position.y - (playerSpriteRenderer.bounds.size.y / 2),
-        //    transform.position.z
-        //);
-
-        //print($"{isOnGround} {wasGrounded}");
-
-        //wasGrounded = isOnGround;
-        //isOnGround = false;
-
-        //for (int i = 0; i < groundLayers.Length; i++)
-        //{
-        //    Collider2D[] colliders = Physics2D.OverlapCircleAll(bottomCenterPoint.position, 4.8f, groundLayers[1]);
-        //    print(colliders.Length);
-
-        //    for (int j = 0; j < colliders.Length; j++)
-        //    {
-        //        if (colliders[j].gameObject != gameObject)
-        //        {
-        //            isOnGround = true;
-        //            if (!wasGrounded)
-        //                OnLandEvent.Invoke();
-
-        //        }
-        //    }
-        //}
-    }
+    //private void FixedUpdate()
+    //{
+    //    bool notOnGround = true;
+    //    while (notOnGround)
+    //    {
+    //        // jogue o código aqui
+    //    }
+    //    // Example of code to check if is on ground -> https://github.com/Brackeys/2D-Character-Controller/blob/master/CharacterController2D.cs
+    //    wasGrounded = isOnGround;
+    //    isOnGround = false;
+    //    for (int i = 0; i < groundLayers.Length; i++)
+    //    {
+    //        isOnGround = playerCollider.IsTouchingLayers(groundLayers[i]);
+    //        if (isOnGround && !wasGrounded)
+    //        {
+    //            //OnLandEvent.Invoke();
+    //            OnLanding();
+    //        }
+    //        if (isOnGround)
+    //        {
+    //            break;
+    //        }
+    //    }
+    //}
 
     // Take Damage Logic ////////////////////////////////////////////////
-    private void OnTriggerStay(Collider other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.CompareTag("Enemy") && !iFrame)
+        if (other.gameObject.CompareTag("Enemy") && !iFrame)
         {
             HP -= 1;
             //hpController.UpdatePlayerUI(); // TODO
@@ -191,7 +167,7 @@ public class PlayerProperties : MonoBehaviour
         weaponSpriteRenderer.sprite = holdingWeaponProps.weaponScriptable.sprite;
         weaponTransform = holdingWeaponProps.handlePoint;
 
-        canAttack = true; // TODO remover essa linha na versão Beta
+        if (newIndex != 0) { canAttack = true; } else { canAttack = false; }
 
         UpdateBulletUI();
     }
@@ -211,6 +187,9 @@ public class PlayerProperties : MonoBehaviour
     {
         //print("[OnLanding] isJumping false");
         playerAnimator.SetBool("isJumping", false);
+        remainingJumps = maxJumps;
+        isOnGround = true;
+        canJump = true;
     }
 
 
@@ -234,4 +213,22 @@ public class PlayerProperties : MonoBehaviour
     }
 
     // Utils ////////////////////////////////////////////////
+
+    public bool CheckIsOnGround()
+    {
+        bool check = false;
+
+        foreach (LayerMask layer in GetGroundLayers)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.75f, layer);
+            check = hit.collider != null;
+            //check = playerCollider.IsTouchingLayers(layer);
+            if (check)
+            {
+                break;
+            }
+        }
+
+        return check;
+    }
 }
