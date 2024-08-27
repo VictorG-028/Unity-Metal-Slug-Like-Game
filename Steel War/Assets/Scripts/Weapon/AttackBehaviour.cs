@@ -20,6 +20,10 @@ public class AttackBehaviour : MonoBehaviour
             enemyProps.TakeDamage(damage);
             Destroy(gameObject);
         }
+        else if (other.gameObject.layer == LayerMask.NameToLayer("SolidGround"))
+        {
+            Destroy(gameObject);
+        }
     }
 
 
