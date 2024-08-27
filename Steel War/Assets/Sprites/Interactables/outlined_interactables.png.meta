@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b88b2f749be05f444b04713a31b160f3
+guid: 6e473a34654c8474a97d7889bfbaa020
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,127 +110,211 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: interactable_big_panels_0
+      name: outlined_interactables_panel_unpressed
       rect:
         serializedVersion: 2
-        x: 12
-        y: 180
-        width: 92
-        height: 70
+        x: 4
+        y: 248
+        width: 136
+        height: 136
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3724bbc606cca804cb9a99a853b96bf1
-      internalID: -1007775682
+      spriteID: ad9092789913bfc4c80ac877cd2a3de5
+      internalID: -816785541
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interactable_big_panels_1
+      name: outlined_interactables_panel_pressed
       rect:
         serializedVersion: 2
-        x: 118
-        y: 180
-        width: 92
-        height: 70
+        x: 196
+        y: 248
+        width: 136
+        height: 136
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a19f992d070c4854c970f2795337fa1b
-      internalID: 29835227
+      spriteID: 94c47f0e41e37b24d853243c0cbfdc27
+      internalID: 1988022496
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interactable_big_panels_2
+      name: outlined_interactables_round_lever_left
       rect:
         serializedVersion: 2
-        x: 11
-        y: 98
-        width: 92
-        height: 70
+        x: 400
+        y: 248
+        width: 108
+        height: 96
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42c81cd37694579468832ba61328e07f
-      internalID: 179564396
+      spriteID: 47a5621e6926c8d4eba728e45ff0d8af
+      internalID: -1838260463
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interactable_big_panels_3
+      name: outlined_interactables_round_lever_right
       rect:
         serializedVersion: 2
-        x: 119
-        y: 98
-        width: 92
-        height: 70
+        x: 532
+        y: 248
+        width: 108
+        height: 96
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 528be527be6920342af1d4fc2bf0121b
-      internalID: -2002861678
+      spriteID: 5dbf966baff4952418a337298450d507
+      internalID: -326970466
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interactable_big_panels_4
+      name: outlined_interactables_big_button_unpressed
       rect:
         serializedVersion: 2
-        x: 9
-        y: 15
-        width: 92
-        height: 70
+        x: 40
+        y: 156
+        width: 68
+        height: 68
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f6968f19dc4ef54baee78eb320a6344
-      internalID: -430340080
+      spriteID: a4251cb8f54d9e94abb751d08f809109
+      internalID: -1169586529
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: interactable_big_panels_5
+      name: outlined_interactables_big_button_pressed
       rect:
         serializedVersion: 2
-        x: 120
-        y: 14
-        width: 92
-        height: 70
+        x: 168
+        y: 156
+        width: 68
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5adae8d299554e14086a36ff4f650819
-      internalID: 1357916748
+      spriteID: 38bd048a8d69c51449e6633fccbd560c
+      internalID: -415100681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: outlined_interactables_small_button_unpressed
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 40
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 202b9753913916f46a1239444afc61ed
+      internalID: 1925087017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: outlined_interactables_small_button_pressed
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 40
+        width: 36
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab080d85334b5b642920a9295443483b
+      internalID: -707804906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: outlined_interactables_square_lever_left
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 56
+        width: 128
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a78f33ad871bd2f4caaaf37019e246ae
+      internalID: 857950215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: outlined_interactables_square_lever_right
+      rect:
+        serializedVersion: 2
+        x: 524
+        y: 56
+        width: 128
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7e9de5a5f718de489f76ccc3baf7c3c
+      internalID: -154557164
       vertices: []
       indices: 
       edges: []
@@ -246,12 +330,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      interactable_big_panels_0: -1007775682
-      interactable_big_panels_1: 29835227
-      interactable_big_panels_2: 179564396
-      interactable_big_panels_3: -2002861678
-      interactable_big_panels_4: -430340080
-      interactable_big_panels_5: 1357916748
+      outlined_interactables_big_button_pressed: -415100681
+      outlined_interactables_big_button_unpressed: -1169586529
+      outlined_interactables_panel_pressed: 1988022496
+      outlined_interactables_panel_unpressed: -816785541
+      outlined_interactables_round_lever_left: -1838260463
+      outlined_interactables_round_lever_right: -326970466
+      outlined_interactables_small_button_pressed: -707804906
+      outlined_interactables_small_button_unpressed: 1925087017
+      outlined_interactables_square_lever_left: 857950215
+      outlined_interactables_square_lever_right: -154557164
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
