@@ -5744,7 +5744,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 0
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
@@ -8053,7 +8053,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -349.61008, y: -264.77496}
+  m_AnchoredPosition: {x: -349.6101, y: -264.77496}
   m_SizeDelta: {x: -730.9199, y: -592.5499}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1441477868
