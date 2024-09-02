@@ -30,7 +30,7 @@ public class Pickable : MonoBehaviour
             } 
             else if (gameObject.CompareTag("Points"))
             {
-                playerProps.points += 50; // TODO - criar um campo que define quantos pontos esse item acrescenta
+                playerProps.ReceivingPoints(50); // TODO - criar um campo que define quantos pontos esse item acrescenta
                 Destroy(gameObject);
             }
         }
