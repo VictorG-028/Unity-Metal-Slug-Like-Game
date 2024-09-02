@@ -46,4 +46,5 @@ public class GameState : MonoBehaviour
         // Go To Death Screen Scene
         SceneManager.LoadScene("Game_Over");
     }
+
 }

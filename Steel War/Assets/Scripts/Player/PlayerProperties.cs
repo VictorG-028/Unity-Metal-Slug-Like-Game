@@ -22,6 +22,7 @@ public class PlayerProperties : MonoBehaviour
     [SerializeField] GameObject[] weapons = null; // All pickable weapons
     [SerializeField] LayerMask[] groundLayers = null;
     [SerializeField] Transform bottomCenterPoint = null;
+    [SerializeField] TextMeshProUGUI scoretext = null;
 
     [Header("Events")]
     [Space]
@@ -82,7 +83,7 @@ public class PlayerProperties : MonoBehaviour
     // Stats
     public int HP = 4;
     public int maxHP = 4;
-    public int points = 0;
+    private int points = 0;
 
     // Action Parameters
     [Range(0.0f, 10.0f)] public float playerSpeed           = 3f;
@@ -102,6 +103,8 @@ public class PlayerProperties : MonoBehaviour
     {
         remainingJumps = maxJumps;
         HoldOtherWeapon(0);
+        scoretext.text = "0 PONTOS";
+
     }
 
     //private void FixedUpdate()
@@ -211,8 +214,12 @@ public class PlayerProperties : MonoBehaviour
 
         weaponImageDisplayUI.sprite = holdingWeaponProps.weaponScriptable.sprite;
     }
-
     // Utils ////////////////////////////////////////////////
+    public void ReceivingPoints(int pointsreceived)
+    {
+        points += pointsreceived;
+        scoretext.text = points.ToString() + " PONTOS";
+    }
 
     public bool CheckIsOnGround()
     {

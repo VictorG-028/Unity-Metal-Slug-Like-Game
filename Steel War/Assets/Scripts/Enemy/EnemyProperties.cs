@@ -15,12 +15,11 @@ public class EnemyProperties : MonoBehaviour
     public bool canAttack = true;
 
     // Stats
+    public EnemyScriptable enemyScriptable;
     public string enemyName = "";
-    public int maxHP = 10;
-    public int currentHP = 2;
-    public int pointsGiven = 5;
-
-    private void OnTriggerEnter2D(Collider2D other)
+    public int currentHP = 999999;
+    
+    private void OnTriggerEnter(Collider other)
     {
         //Debug.Log($"Collider {other} entrou no colider do {enemyName}");
         if (other.CompareTag("Attack"))
@@ -29,16 +28,20 @@ public class EnemyProperties : MonoBehaviour
         }
     }
 
-
     public void TakeDamage(int damage)
     {
+        if(currentHP>enemyScriptable.MaxHP)
+        {
+            currentHP = enemyScriptable.MaxHP;
+        }
         currentHP -= damage;
-        Debug.Log($"O jogador atacou {enemyName}! ({currentHP}/{maxHP})HP");
+        
+        Debug.Log($"O jogador atacou {enemyName}! ({currentHP}/{enemyScriptable.MaxHP})HP");
 
         if (currentHP <= 0)
         {
             Destroy(gameObject);
-            playerProps.points += pointsGiven;
+            playerProps.ReceivingPoints(enemyScriptable.PointsGiven);
         }
     }
 }
