@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3f3a7282fa65ad41a02805dd5db01fe, type: 3}
-  m_Name: Tank
+  m_Name: Motocycle
   m_EditorClassIdentifier: 
-  maxHP: 70
-  hpIncreasePerStage: 35
-  pointsGiven: 400
-  shootingPattern: 6
+  maxHP: 5
+  hpIncreasePerStage: 1
+  pointsGiven: 50
+  shootingPattern: 0

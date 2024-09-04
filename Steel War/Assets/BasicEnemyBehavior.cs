@@ -12,7 +12,7 @@ public class BasicEnemyBehavior : MonoBehaviour
     [SerializeField] Transform gunBarrelPoint = null;
     [SerializeField] Sprite bulletSprite = null;
     [SerializeField] Animator animator = null;
-    [SerializeField] ShootingPolicy shootingPolicy = ShootingPolicy.OnlyForward;
+    //[SerializeField] ShootingPolicy shootingPolicy = ShootingPolicy.OnlyForward;
 
 
     private void OnValidate()
@@ -38,6 +38,7 @@ public class BasicEnemyBehavior : MonoBehaviour
     {
         if (enemyProps.canAttack)
         {
+            print($"Inimigo {this.name} deve atirar");
             ShootBullet();
         }
     }
@@ -68,18 +69,19 @@ public class BasicEnemyBehavior : MonoBehaviour
         // Adiciona lógica de colisão e dano
         AttackBehaviour attackBehaviour = bulletObject.AddComponent<AttackBehaviour>();
         attackBehaviour.damage = bulletDamage;
+        attackBehaviour.isShootedByEnemy = true;
 
         StartCoroutine(CanAttackAfterDelay(delayBetweenAttacks));
         Destroy(bulletObject, bulletDuration);
     }
 
     // Enum ////////////////////////////////////////////////
-    private enum ShootingPolicy
-    {
-        OnlyForward,
-        RandomlyBetweenForwardAndTarget,
-        AlternateDirections
-    }
+    //private enum ShootingPolicy
+    //{
+    //    OnlyForward,
+    //    RandomlyBetweenForwardAndTarget,
+    //    AlternateDirections
+    //}
 
     // Utils ////////////////////////////////////////////////
 
@@ -87,22 +89,25 @@ public class BasicEnemyBehavior : MonoBehaviour
     {
         if (playerTransform.position.x < transform.position.x)
         {
-            return new Vector3(1f, 0f, 0f);
+            return new Vector3(-1f, 0f, 0f);
         }
         else
         {
-            return new Vector3(-1f, 0f, 0f);
+            return new Vector3(1f, 0f, 0f);
         }
     }
 
     private Vector3 CalculateLookDirection()
     {
-        switch (shootingPolicy)
+        switch (enemyProps.enemyScriptable.Pattern)
         {
-            case ShootingPolicy.OnlyForward:
+            case ShootingPattern.Straight:
                 return CalculateFoward();
 
-            case ShootingPolicy.RandomlyBetweenForwardAndTarget:
+            //case ShootingPattern.Spread:
+            //    return Vector3.forward;
+
+            case ShootingPattern.Random:
                 if (Random.Range(0f, 100f) <= 30f) // 30% de chance de atirar em direção ao player
                 {
                     return (playerTransform.position - transform.position).normalized;
@@ -112,7 +117,7 @@ public class BasicEnemyBehavior : MonoBehaviour
                     return CalculateFoward();
                 }
 
-            //case ShootingPolicy.AlternateDirections:
+            //case ShootingPattern.Tank:
             //    TODO
             //    return direction;
 

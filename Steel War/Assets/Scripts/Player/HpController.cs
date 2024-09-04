@@ -16,7 +16,8 @@ public class HpController : MonoBehaviour
         if (containers == null || containers.Length == 0)
         {
             containers = GameObject.FindGameObjectsWithTag("HealthBar")
-                                .Select(x => x.GetComponent<Image>()).ToArray();
+                                .Select(x => x.GetComponent<Image>())
+                                .ToArray();
         }
 
         if (!emptyBar) { emptyBar = Resources.Load<Sprite>("Assets/Sprites/EmptyBar.png"); }
@@ -30,13 +31,17 @@ public class HpController : MonoBehaviour
 
     public void UpdatePlayerUI()
     {
-        int fullContainersAmmount = playerProps.HP / 2; // implicit convert float to int removes the 0.5 (floor operation)
-        int halfFullContainersAmmount = playerProps.HP % 2;
-
-        for (int i = 0; i < fullContainersAmmount; i++)
-        { containers[i].sprite = fullBar; }
-
-        for (int i = fullContainersAmmount + halfFullContainersAmmount; i < containers.Length; i++)
-        { containers[i].sprite = emptyBar; }
+        for (int i = 0; i < playerProps.maxHP; i++)
+        {
+            if (i < playerProps.HP)
+            {
+                containers[i].sprite = fullBar;
+            }
+            else
+            {
+                containers[i].sprite = emptyBar;
+            }
+            
+        }
     }
 }

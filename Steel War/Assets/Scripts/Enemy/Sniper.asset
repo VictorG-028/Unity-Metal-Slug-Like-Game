@@ -15,4 +15,4 @@ MonoBehaviour:
   maxHP: 10
   hpIncreasePerStage: 5
   pointsGiven: 180
-  shootingPattern: 3
+  shootingPattern: 4

@@ -30,7 +30,7 @@ public class EnemyProperties : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if(currentHP>enemyScriptable.MaxHP)
+        if(currentHP > enemyScriptable.MaxHP)
         {
             currentHP = enemyScriptable.MaxHP;
         }

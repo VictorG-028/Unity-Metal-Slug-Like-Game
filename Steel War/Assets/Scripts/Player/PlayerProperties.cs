@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -15,6 +14,7 @@ public class PlayerProperties : MonoBehaviour
     [SerializeField] Collider2D playerCollider = null;
     [SerializeField] SpriteRenderer playerSpriteRenderer = null;
     [SerializeField] TextMeshProUGUI bulletUI = null;
+    [SerializeField] TextMeshProUGUI scoretext = null;
     [SerializeField] Image weaponImageDisplayUI = null;
     [SerializeField] Transform weaponTransform = null;
     [SerializeField] SpriteRenderer weaponSpriteRenderer = null;
@@ -22,7 +22,6 @@ public class PlayerProperties : MonoBehaviour
     [SerializeField] GameObject[] weapons = null; // All pickable weapons
     [SerializeField] LayerMask[] groundLayers = null;
     [SerializeField] Transform bottomCenterPoint = null;
-    [SerializeField] TextMeshProUGUI scoretext = null;
 
     [Header("Events")]
     [Space]
@@ -30,25 +29,40 @@ public class PlayerProperties : MonoBehaviour
 
     private void OnValidate()
     {
-        if (!gameState) { gameState = GameObject.Find("GameState").GetComponent<GameState>(); }
-        //if (!hpController) { hpController = GameObject.Find("Canvas").GetComponent<HpController>(); }
-        if (!playerAnimator) { playerAnimator = GameObject.Find("Player").GetComponent<Animator>(); }
-        if (!playerCollider) { playerCollider = GameObject.Find("Player").GetComponent<Collider2D>(); }
-        if (!playerSpriteRenderer) { playerSpriteRenderer = GameObject.Find("Player").GetComponent<SpriteRenderer>(); }
-        if (!bulletUI) { bulletUI = GameObject.Find("Bullet Text TMP").GetComponent<TextMeshProUGUI>(); }
-        if (!weaponImageDisplayUI) { weaponImageDisplayUI = GameObject.Find("Weapon Image Display").GetComponent<Image>(); }
-        if (!weaponTransform) { weaponTransform = GameObject.Find("Weapon").GetComponent<Transform>(); }
-        if (!weaponSpriteRenderer) { weaponSpriteRenderer = GameObject.Find("Weapon").GetComponent<SpriteRenderer>(); }
-        if (!holdingWeaponProps) { holdingWeaponProps = GameObject.Find("BareHand").GetComponent<WeaponProperties>(); }
+        GameObject gameStateGO = GameObject.Find("GameState");
+        GameObject healthBarGO = GameObject.Find("HealthBar");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject bulletCanvaGO = GameObject.Find("Bullet Text TMP");
+        GameObject scoreCanvaGO = GameObject.Find("Score Text TMP");
+        GameObject weaponCanvaGO = GameObject.Find("Weapon Image Display");
+        GameObject weaponGO = GameObject.Find("Weapon");
+        GameObject bareHandGO = GameObject.Find("BareHand");
+        GameObject playerBottonCenter = GameObject.Find("Player Bottom Center Point");
+
+        if (!gameState && gameStateGO) { gameState = gameStateGO.GetComponent<GameState>(); }
+        if (!hpController && healthBarGO) { hpController = healthBarGO.GetComponent<HpController>(); }
+        if (!playerAnimator && player) { playerAnimator = player.GetComponent<Animator>(); }
+        if (!playerCollider && player) { playerCollider = player.GetComponent<Collider2D>(); }
+        if (!playerSpriteRenderer && player) { playerSpriteRenderer = player.GetComponent<SpriteRenderer>(); }
+        if (!bulletUI && bulletCanvaGO) { bulletUI = bulletCanvaGO.GetComponent<TextMeshProUGUI>(); }
+        if (!scoretext && scoreCanvaGO) { scoretext = scoreCanvaGO.GetComponent<TextMeshProUGUI>(); }
+        if (!weaponImageDisplayUI && weaponCanvaGO) { weaponImageDisplayUI = weaponCanvaGO.GetComponent<Image>(); }
+        if (!weaponTransform && weaponGO) { weaponTransform = weaponGO.GetComponent<Transform>(); }
+        if (!weaponSpriteRenderer && weaponGO) { weaponSpriteRenderer = weaponGO.GetComponent<SpriteRenderer>(); }
+        if (!holdingWeaponProps && bareHandGO) { holdingWeaponProps = bareHandGO.GetComponent<WeaponProperties>(); }
         weapons ??= GameObject.FindGameObjectsWithTag("Holdable Weapon");
         if (groundLayers == null)
         {
-            groundLayers = new LayerMask[2]; // TODO (baixa relevância) trocar 2 por lenght
+            groundLayers = new LayerMask[3];
+            groundLayers = new LayerMask[3];
             groundLayers[0] = LayerMask.GetMask("OneWayPlatform");
             groundLayers[1] = LayerMask.GetMask("SolidGround");
+            groundLayers[2] = LayerMask.GetMask("Enemy");
+            groundLayers[2] = LayerMask.GetMask("Enemy");
         }
         OnLandEvent ??= new UnityEvent();
-        if (!bottomCenterPoint) { bottomCenterPoint = GameObject.Find("Player Bottom Center Point").transform; }
+        if (!bottomCenterPoint && playerBottonCenter) { bottomCenterPoint = playerBottonCenter.transform; }
+        if (!bottomCenterPoint && playerBottonCenter) { bottomCenterPoint = playerBottonCenter.transform; }
     }
 
     // Actions
@@ -100,51 +114,30 @@ public class PlayerProperties : MonoBehaviour
     {
         remainingJumps = maxJumps;
         HoldOtherWeapon(0);
-        scoretext.text = "0 PONTOS";
-
     }
 
-    //private void FixedUpdate()
-    //{
-    //    bool notOnGround = true;
-    //    while (notOnGround)
-    //    {
-    //        // jogue o código aqui
-    //    }
-    //    // Example of code to check if is on ground -> https://github.com/Brackeys/2D-Character-Controller/blob/master/CharacterController2D.cs
-    //    wasGrounded = isOnGround;
-    //    isOnGround = false;
-    //    for (int i = 0; i < groundLayers.Length; i++)
-    //    {
-    //        isOnGround = playerCollider.IsTouchingLayers(groundLayers[i]);
-    //        if (isOnGround && !wasGrounded)
-    //        {
-    //            //OnLandEvent.Invoke();
-    //            OnLanding();
-    //        }
-    //        if (isOnGround)
-    //        {
-    //            break;
-    //        }
-    //    }
-    //}
-
     // Take Damage Logic ////////////////////////////////////////////////
+
+    public void TakeDamage(int damage)
+    {
+        HP -= 1;
+        hpController.UpdatePlayerUI();
+        Debug.Log($"O inimigo atacou o jogador! {HP}/{maxHP}");
+
+        if (HP == 0)
+        {
+            gameState.Restart();
+        }
+
+        iFrame = true;
+        StartCoroutine(DisableIFrameAfterDelay(2.0f)); // Desativa iFrame após 2 segundos
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Enemy") && !iFrame)
         {
-            HP -= 1;
-            hpController.UpdatePlayerUI();
-            Debug.Log($"O inimigo atacou o jogador! {HP}/{maxHP}");
-
-            if (HP == 0)
-            {
-                gameState.Restart();
-            }
-
-            iFrame = true;
-            StartCoroutine(DisableIFrameAfterDelay(2.0f)); // Desativa iFrame após 2 segundos
+            TakeDamage(1);
         }
     }
 
@@ -210,6 +203,8 @@ public class PlayerProperties : MonoBehaviour
         }
 
         weaponImageDisplayUI.sprite = holdingWeaponProps.weaponScriptable.sprite;
+        weaponImageDisplayUI.SetNativeSize();
+        weaponImageDisplayUI.SetNativeSize();
     }
     // Utils ////////////////////////////////////////////////
     public void ReceivingPoints(int pointsreceived)
@@ -220,6 +215,8 @@ public class PlayerProperties : MonoBehaviour
 
     public bool CheckIsOnGround()
     {
+        // Example of code to check if is on ground -> https://github.com/Brackeys/2D-Character-Controller/blob/master/CharacterController2D.cs
+        // Example of code to check if is on ground -> https://github.com/Brackeys/2D-Character-Controller/blob/master/CharacterController2D.cs
         bool check = false;
 
         foreach (LayerMask layer in GetGroundLayers)

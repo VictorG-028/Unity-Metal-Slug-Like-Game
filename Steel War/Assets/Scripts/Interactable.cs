@@ -37,6 +37,7 @@ public class Interactable : MonoBehaviour, IInteractable
 
         if (!collider_2D) { collider_2D = GetComponent<Collider2D>(); }
         if (!spriteRenderer) { spriteRenderer = GetComponent<SpriteRenderer>(); }
+        if (!outlinedTurnedOnSprite) { outlinedTurnedOnSprite = turnedOnSprite; }// Get rid of warning "never being used"
         //if (!turnedOnSprite && !turnedOffSprite)
         //{
         //    string[] spriteNames = {

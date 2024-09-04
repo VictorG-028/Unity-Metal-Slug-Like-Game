@@ -4,7 +4,7 @@ using UnityEngine;
 public class AttackBehaviour : MonoBehaviour
 {
     // Variables setted by any script that creates an attack
-    public bool isShootedByEnemy = false;
+    public bool isShootedByEnemy = false; // Needed make enemy not auto damage itself
     public int damage = 1;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -15,13 +15,17 @@ public class AttackBehaviour : MonoBehaviour
 
         if (other.transform.CompareTag("Player") && isShootedByEnemy)
         {
-            // TODO - fazer jogador tomar dano da bala do inimigo
-            return;
+            Debug.Log($"[OnTriggerEnter2D] Bala colidiu com {other} {other.transform.name} {other.transform.tag}");
+            print("DEVERIA entrar aqui!!!");
+            PlayerProperties playerProps = other.gameObject.GetComponent<PlayerProperties>();
+
+            playerProps.TakeDamage(damage);
+            Destroy(gameObject);
         }
-        else if (other.transform.CompareTag("Enemy"))
+        else if (other.transform.CompareTag("Enemy") && !isShootedByEnemy)
         {
             Debug.Log($"[OnTriggerEnter2D] Bala colidiu com {other} {other.transform.name} {other.transform.tag}");
-
+            print("Não deveria entrar aqui");
             EnemyProperties enemyProps = other.gameObject.GetComponent<EnemyProperties>();
 
             enemyProps.TakeDamage(damage);

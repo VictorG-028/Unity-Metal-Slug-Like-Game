@@ -11,9 +11,9 @@ public class EnemyScriptable : ScriptableObject
 
 	// Getter
 	public int MaxHP
-  {
+    {
       get { return maxHP; }
-  }
+    }
 
     public int PointsGiven
     {
@@ -35,10 +35,11 @@ public class EnemyScriptable : ScriptableObject
 
 public enum ShootingPattern
 {
+    NoPattern,         // Quando o inimigo não atira
     Straight,          // Tiro direto
     Spread,            // Tiro espalhado
     Burst,             // Disparo em rajada
-    StearringBehavior,  // Disparo do sniper
+    StearringBehavior, // Disparo do sniper
     Circular,          // Disparo em círculo
     Random,            // Tiro aleatório
     Tank,
