@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class PlayerProperties : MonoBehaviour
 {
     [SerializeField] GameState gameState = null;
-    //[SerializeField] HpController hpController = null;
+    [SerializeField] HpController hpController = null;
     [SerializeField] Animator playerAnimator = null;
     [SerializeField] Collider2D playerCollider = null;
     [SerializeField] SpriteRenderer playerSpriteRenderer = null;
@@ -30,14 +30,11 @@ public class PlayerProperties : MonoBehaviour
 
     private void OnValidate()
     {
-        GameObject gameStateObj = GameObject.Find("GameState");
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        if (!gameState && gameStateObj) { gameState = gameStateObj.GetComponent<GameState>(); }
+        if (!gameState) { gameState = GameObject.Find("GameState").GetComponent<GameState>(); }
         //if (!hpController) { hpController = GameObject.Find("Canvas").GetComponent<HpController>(); }
-        if (!playerAnimator && player) { playerAnimator = player.GetComponent<Animator>(); }
-        if (!playerCollider && player) { playerCollider = player.GetComponent<Collider2D>(); }
-        if (!playerSpriteRenderer && player) { playerSpriteRenderer = player.GetComponent<SpriteRenderer>(); }
+        if (!playerAnimator) { playerAnimator = GameObject.Find("Player").GetComponent<Animator>(); }
+        if (!playerCollider) { playerCollider = GameObject.Find("Player").GetComponent<Collider2D>(); }
+        if (!playerSpriteRenderer) { playerSpriteRenderer = GameObject.Find("Player").GetComponent<SpriteRenderer>(); }
         if (!bulletUI) { bulletUI = GameObject.Find("Bullet Text TMP").GetComponent<TextMeshProUGUI>(); }
         if (!weaponImageDisplayUI) { weaponImageDisplayUI = GameObject.Find("Weapon Image Display").GetComponent<Image>(); }
         if (!weaponTransform) { weaponTransform = GameObject.Find("Weapon").GetComponent<Transform>(); }
@@ -138,9 +135,9 @@ public class PlayerProperties : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy") && !iFrame)
         {
             HP -= 1;
-            //hpController.UpdatePlayerUI(); // TODO
+            hpController.UpdatePlayerUI();
             Debug.Log($"O inimigo atacou o jogador! {HP}/{maxHP}");
-            
+
             if (HP == 0)
             {
                 gameState.Restart();

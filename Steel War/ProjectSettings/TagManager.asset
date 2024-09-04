@@ -9,6 +9,7 @@ TagManager:
   - Holdable Weapon
   - OneWayPlatform
   - Points
+  - HealthBar
   layers:
   - Default
   - TransparentFX
