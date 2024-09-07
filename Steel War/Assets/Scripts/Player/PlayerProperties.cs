@@ -87,7 +87,7 @@ public class PlayerProperties : MonoBehaviour
 
     // Special properties
     public bool iFrame = false;
-    private int currentWeaponIndex = 0;
+    private WeaponIndex currentWeaponIndex = WeaponIndex.BareHand;
     public GameObject currentPlatform = null;
     //public string assetPath = "Weapons/{0}.asset"; // Caminho para os ScriptableObjects
 
@@ -120,11 +120,11 @@ public class PlayerProperties : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        HP -= 1;
+        HP -= damage;
         hpController.UpdatePlayerUI();
         Debug.Log($"O inimigo atacou o jogador! {HP}/{maxHP}");
 
-        if (HP == 0)
+        if (HP <= 0)
         {
             gameState.Restart();
         }
@@ -149,10 +149,26 @@ public class PlayerProperties : MonoBehaviour
 
     // Setters ////////////////////////////////////////////////
 
-    public void HoldOtherWeapon(int newIndex)
+    public void HoldOtherWeapon(WeaponIndex newIndex)
     {
+        if (currentWeaponIndex == newIndex)
+        {
+            ReplenishAmmo();
+            return;
+        }
+
+        // Update Characteristic
+        if (newIndex == WeaponIndex.BareHand || newIndex == WeaponIndex.Pistol)
+            { isUsingPistolOrKnife = true; }
+        else 
+            { isUsingPistolOrKnife = false; }
+        if (newIndex != WeaponIndex.BareHand) 
+            { canAttack = true; } 
+        else 
+            { canAttack = false; }
+
         // Load weapon properties
-        this.holdingWeaponProps = weapons[newIndex].GetComponent<WeaponProperties>();
+        this.holdingWeaponProps = weapons[(int)newIndex].GetComponent<WeaponProperties>();
         //this.holdingWeaponScriptableProps = holdingWeaponProps.weaponScriptable;
         currentWeaponIndex = newIndex;
 
@@ -160,19 +176,71 @@ public class PlayerProperties : MonoBehaviour
         weaponSpriteRenderer.sprite = holdingWeaponProps.weaponScriptable.sprite;
         weaponTransform = holdingWeaponProps.handlePoint;
 
-        if (newIndex != 0) { canAttack = true; } else { canAttack = false; }
-
         UpdateBulletUI();
     }
 
     public void SubtractAmmo(int ammount)
     {
         holdingWeaponProps.weaponScriptable.currentAmmo -= ammount;
+        UpdateBulletUI();
     }
 
     public void SetWeaponSpriteRendererFlipY(bool newFlipY)
     {
         weaponSpriteRenderer.flipY = newFlipY;
+    }
+
+    public void ReplenishAmmo()
+    {
+        holdingWeaponProps.weaponScriptable.currentAmmo = holdingWeaponProps.weaponScriptable.baseMaxAmmo;
+        UpdateBulletUI();
+    }
+
+    public void AddHp(int ammount)
+    {
+        if (HP + ammount > maxHP)
+        {
+            HP = maxHP;
+        }
+        else
+        {
+            HP += ammount;
+        }
+
+        hpController.UpdatePlayerUI();
+    }
+
+    public void AddAmmoToCurrentHoldingWeapon(int ammount)
+    {
+        if (ammount > holdingWeaponProps.weaponScriptable.baseMaxAmmo)
+        {
+            holdingWeaponProps.weaponScriptable.currentAmmo = holdingWeaponProps.weaponScriptable.baseMaxAmmo;
+        }
+        else
+        {
+            holdingWeaponProps.weaponScriptable.currentAmmo += ammount;
+        }
+        UpdateBulletUI();
+    }
+
+    public void AddAmmoToWeaponByIndex(int ammount, WeaponIndex weaponIndex)
+    {
+        // Can't add ammo on infinite ammo weapons
+        if (weaponIndex == WeaponIndex.BareHand) { return; }
+        if (weaponIndex == WeaponIndex.Pistol) { return; }
+
+        WeaponProperties weaponProps = weapons[(int)weaponIndex].GetComponent<WeaponProperties>();
+
+        if (ammount > weaponProps.weaponScriptable.baseMaxAmmo)
+        {
+            weaponProps.weaponScriptable.currentAmmo = weaponProps.weaponScriptable.baseMaxAmmo;
+        }
+        else
+        {
+            weaponProps.weaponScriptable.currentAmmo += ammount;
+        }
+
+        UpdateBulletUI();
     }
 
     // Animation ////////////////////////////////////////////////
@@ -187,8 +255,7 @@ public class PlayerProperties : MonoBehaviour
 
 
     // UI ////////////////////////////////////////////////
-
-    public void UpdateBulletUI()
+    private void UpdateBulletUI()
     {
         if (holdingWeaponProps.weaponScriptable.baseMaxAmmo == -1)
         {
@@ -231,5 +298,13 @@ public class PlayerProperties : MonoBehaviour
         }
 
         return check;
+    }
+
+    public enum WeaponIndex
+    {
+        BareHand, // 0 = (int) WeaponIndex.BareHand
+        Pistol,   // 1
+        AK47,     // 2
+        Shotgun,  // 3
     }
 }

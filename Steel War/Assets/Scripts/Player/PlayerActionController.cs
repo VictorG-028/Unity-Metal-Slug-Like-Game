@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using static PlayerProperties;
 
 public class PlayerActionController : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class PlayerActionController : MonoBehaviour
 
     void OnValidate()
     {
+        GameObject playerArm = GameObject.Find("Arm");
+
         if (!playerTransform) { playerTransform = GameObject.Find("Player").GetComponent<Transform>(); }
         if (!playerRigidyBody) { playerRigidyBody = GameObject.Find("Player").GetComponent<Rigidbody2D>(); }
         if (!playerAnimator) { playerAnimator = GameObject.Find("Player").GetComponent<Animator>(); }
@@ -32,7 +35,7 @@ public class PlayerActionController : MonoBehaviour
         //if (!gunShotEffect) { gunShotEffect = GameObject.Find("Gun Shot Effect").GetComponent<ParticleSystem>(); }
         if (!gunShotGO) { gunShotGO = GameObject.Find("Gun Point"); }
         if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("TODO"); }
-        if (!armTransform) { armTransform = GameObject.FindGameObjectWithTag("Player Arm").transform; }
+        if (!armTransform && playerArm) { armTransform = playerArm.transform; }
         if (armCachedPositionsRun == null) { armCachedPositionsRun = new Vector3[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de andar
         if (armCachedPositionsJump == null) { armCachedPositionsJump = new Vector3[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de pular
         if (armCachedIsCalculatedRun == null) { armCachedIsCalculatedRun = new bool[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de pular
@@ -121,23 +124,19 @@ public class PlayerActionController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Z))
         {
-            playerProps.HoldOtherWeapon(0); // Troca para faca
-            playerProps.isUsingPistolOrKnife = true;
+            playerProps.HoldOtherWeapon(WeaponIndex.BareHand);
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            playerProps.HoldOtherWeapon(1); // Troca para pistola
-            playerProps.isUsingPistolOrKnife = true;
+            playerProps.HoldOtherWeapon(WeaponIndex.Pistol);
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            playerProps.HoldOtherWeapon(2); // Troca para AK-47
-            playerProps.isUsingPistolOrKnife = false;
+            playerProps.HoldOtherWeapon(WeaponIndex.AK47);
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            playerProps.HoldOtherWeapon(3); // Troca para shotgun
-            playerProps.isUsingPistolOrKnife = false;
+            playerProps.HoldOtherWeapon(WeaponIndex.Shotgun);
         }
     }
 
@@ -183,7 +182,6 @@ public class PlayerActionController : MonoBehaviour
         playerProps.canAttack = false;
         
         if (shouldSubtractAmmo) playerProps.SubtractAmmo(1);
-        playerProps.UpdateBulletUI();
 
         Vector3 lookDirection = CalculateLookDirection();
 
