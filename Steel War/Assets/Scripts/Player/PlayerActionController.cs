@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static PlayerProperties;
 
@@ -87,7 +89,7 @@ public class PlayerActionController : MonoBehaviour
                 playerAnimator.SetBool("isJumping", false);
                 playerAnimator.SetBool("isRunning", false);
 
-                // TODO - movar código do script PlatformCollision para aqui
+                StartCoroutine(DisableCollision());
             }
         }
         else if (Input.GetButtonDown("Jump") && Input.GetKeyDown(KeyCode.W))
@@ -101,6 +103,8 @@ public class PlayerActionController : MonoBehaviour
                 playerProps.remainingJumps--; // Decrementa o número de pulos restantes
                 playerProps.isOnGround = false;
                 playerProps.canJump = false;
+
+                //StartCoroutine(ToggleAbovePlatformsCollision());
                 StartCoroutine(DelayedCheckOnGround(0.2f));
             }
         }
@@ -141,13 +145,13 @@ public class PlayerActionController : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.contacts[0].normal.y > 0.5f) // Verifica se colidiu com o chão
-        {
-            playerProps.remainingJumps = playerProps.maxJumps; // Reseta o número de pulos ao tocar o chão
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.contacts[0].normal.y > 0.5f) // Verifica se colidiu com o chão
+    //    {
+    //        playerProps.remainingJumps = playerProps.maxJumps; // Reseta o número de pulos ao tocar o chão
+    //    }
+    //}
 
     private void MelleAttack()
     {
@@ -225,20 +229,20 @@ public class PlayerActionController : MonoBehaviour
         return direction;
     }
 
-    private IEnumerator MoveBullet(GameObject movingObject)
-    {
-        float timer = 0f;
-        while (timer < playerProps.bulletAttackDuration)
-        {
-            if (movingObject == null)
-                yield break; // Sai da coroutine se o objeto Bullet for destruído prematuramente
+    //private IEnumerator MoveBullet(GameObject movingObject)
+    //{
+    //    float timer = 0f;
+    //    while (timer < playerProps.bulletAttackDuration)
+    //    {
+    //        if (movingObject == null)
+    //            yield break; // Sai da coroutine se o objeto Bullet for destruído prematuramente
 
-            movingObject.transform.position += playerProps.bulletVelocity * Time.deltaTime * movingObject.transform.forward;
-            timer += Time.deltaTime;
-            yield return null; // Aguarda um frame
-        }
-        Destroy(movingObject);
-    }
+    //        movingObject.transform.position += playerProps.bulletVelocity * Time.deltaTime * movingObject.transform.forward;
+    //        timer += Time.deltaTime;
+    //        yield return null; // Aguarda um frame
+    //    }
+    //    Destroy(movingObject);
+    //}
 
     private IEnumerator DelayedCheckOnGround(float delay)
     {
@@ -260,12 +264,65 @@ public class PlayerActionController : MonoBehaviour
         }
     }
 
+    //private IEnumerator ToggleAbovePlatformsCollision()
+    //{
+    //    IEnumerable<RaycastHit2D> platforms = GetAboveOneWayPlatforms();
+
+    //    List<Collider2D> platformsColliders = platforms
+    //        .Where(hit => hit.transform.CompareTag("OneWayPlatform"))
+    //        .Select(hit => hit.transform.GetComponent<Collider2D>())
+    //        .Where(c => c != null)
+    //        .ToList();
+    //    print($"{platformsColliders.Count} {platformsColliders}");
+
+    //    platformsColliders.ForEach(collider => collider.enabled = false);
+
+    //    IEnumerable<RaycastHit2D> afterPlatforms = platforms;
+
+    //    while (true)
+    //    {
+    //        if (afterPlatforms.Count() < platforms.Count())
+    //        {
+    //            platformsColliders.ForEach(collider => collider.enabled = true);
+    //            break;
+    //        }
+    //        afterPlatforms = GetAboveOneWayPlatforms();
+    //        yield return null;
+    //    }
+    
+    //}
+
     private IEnumerator CanAttackAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         playerProps.canAttack = true;
         playerAnimator.SetBool("isUsingKnife", false);
         armTransform.gameObject.SetActive(true);
+    }
+
+    private IEnumerator DisableCollision()
+    {
+        BoxCollider2D[] platformColliders = playerProps.oneWayPlatformsBelowList
+                                                       .Select(p => p.GetComponent<BoxCollider2D>())
+                                                       .ToArray();
+        BoxCollider2D playerCollider = GetComponent<BoxCollider2D>();
+        float disableTime = 0.5f;
+
+        // Desativa a colisão para permitir que o personagem caia
+        foreach (BoxCollider2D platformCollider in platformColliders)
+        {
+            //platformCollider.enabled = false;
+            Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
+        }
+
+        yield return new WaitForSeconds(disableTime);
+
+        // Reativa a colisão após o tempo especificado
+        foreach (BoxCollider2D platformCollider in platformColliders)
+        {
+            //platformCollider.enabled = true;
+            Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
+        }
     }
 
     public void RepositionArmRunAnimationEvent(int t)
@@ -316,4 +373,22 @@ public class PlayerActionController : MonoBehaviour
     {
         armTransform.localPosition = armInitialLocalPosition;
     }
+
+    //private IEnumerable<RaycastHit2D> GetAboveOneWayPlatforms()
+    //{
+    //    RaycastHit2D[] leftHits = Physics2D.RaycastAll(
+    //        playerProps.GetTopLeftPoint.position,
+    //        Vector2.up,
+    //        15.0f,
+    //        LayerMask.GetMask("OneWayPlatform")
+    //    );
+    //    RaycastHit2D[] rightHits = Physics2D.RaycastAll(
+    //        playerProps.GetTopRightPoint.position,
+    //        Vector2.up,
+    //        15.0f,
+    //        LayerMask.GetMask("OneWayPlatform")
+    //    );
+
+    //    return leftHits.Union(rightHits);
+    //}
 }
