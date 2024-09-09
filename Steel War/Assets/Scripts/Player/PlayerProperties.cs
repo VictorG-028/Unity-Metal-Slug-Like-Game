@@ -30,6 +30,10 @@ public class PlayerProperties : MonoBehaviour
     [Space]
     public UnityEvent OnLandEvent = null;
 
+    // Private Constants
+    private readonly float minDelayBetweenShots = 0.1f;
+    private readonly float maxDelayBetweenShots = 1.0f;
+
     private void OnValidate()
     {
         GameObject gameStateGO = GameObject.Find("GameState");
@@ -88,6 +92,8 @@ public class PlayerProperties : MonoBehaviour
     public LayerMask[] GetGroundLayers => groundLayers;
     public Transform GetTopLeftPoint => topLeftPoint;
     public Transform GetTopRightPoint => topRightPoint;
+    public int GetGunBulletMultiplier => holdingWeaponProps.weaponScriptable.bulletMultiplier;
+    public float GetGunDelayBetweenShots => Mathf.Lerp(maxDelayBetweenShots, minDelayBetweenShots, (holdingWeaponProps.weaponScriptable.fireRate - 1) / 9.0f);
     public bool isOnGround = true;
     public bool wasGrounded = false;
 
@@ -111,6 +117,7 @@ public class PlayerProperties : MonoBehaviour
     [Range(0.0f, 5.0f)] public float startBulletDistance    = 1.0f;
     [Range(3.0f, 100.0f)] public float bulletAttackDuration = 85.0f;
     [Range(0.0f, 10.0f)] public float bulletVelocity        = 10.0f;
+    
 
     // Control action logic
     public bool shouldSubtractAmmo = false;

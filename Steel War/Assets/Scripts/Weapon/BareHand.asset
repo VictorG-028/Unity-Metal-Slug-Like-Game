@@ -17,4 +17,4 @@ MonoBehaviour:
   baseMaxAmmo: 0
   currentAmmo: 0
   sprite: {fileID: 21300000, guid: 00f40c95aab5c4648ae7cca6d3854a04, type: 3}
-  cursor: {fileID: 2800000, guid: f58972b6cfcfecf4885486a5c75ab745, type: 3}
+  cursor: {fileID: 2800000, guid: 811c4d67ed3e1e143a993f5084902bec, type: 3}

@@ -180,41 +180,45 @@ public class PlayerActionController : MonoBehaviour
     {
         playerProps.canAttack = false;
 
-
         if (shouldSubtractAmmo) playerProps.SubtractAmmo(1);
 
         Vector3 lookDirection = CalculateLookDirection();
+        List <Vector3> rotatedDirections = GenerateRotatedDirections(lookDirection, playerProps.GetGunBulletMultiplier);
 
         gunShotMuzzleEffect.transform.position = playerProps.GetGunBarrelPoint.position - 0.2f * lookDirection; // Gambiarra pra coocar na posição do cano da arma
         gunShotMuzzleEffect.Play();
 
-        GameObject bulletObject = new("Bullet") { tag = "Attack" };
-        //bulletObject.transform.position = transform.position + lookDirection * playerProps.startBulletDistance;
-        bulletObject.transform.position = playerProps.GetGunBarrelPoint.position;
 
-        // Adiciona um sprite renderer com um sprite
-        SpriteRenderer spriteRenderer = bulletObject.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = bulletSprite;
-        bulletObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        foreach (Vector3 direction in rotatedDirections)
+        {
+            GameObject bulletObject = new("Bullet") { tag = "Attack" };
+            //bulletObject.transform.position = transform.position + lookDirection * playerProps.startBulletDistance;
+            bulletObject.transform.position = playerProps.GetGunBarrelPoint.position;
 
-        // Adiciona um colider e rigidyBody
-        BoxCollider2D collider = bulletObject.AddComponent<BoxCollider2D>();
-        //collider.center = new Vector3(0, 0.2f, 0); // x, y, z
-        collider.size = new Vector2(1.0f, 1.0f); // Largura, Altura
-        collider.isTrigger = true;
-        Rigidbody2D rigidbody = bulletObject.AddComponent<Rigidbody2D>();
-        rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        rigidbody.velocity = lookDirection * playerProps.bulletVelocity;
-        rigidbody.gravityScale = 0;
-        //rigidbody.simulated = true;
+            // Adiciona um sprite renderer com um sprite
+            SpriteRenderer spriteRenderer = bulletObject.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = bulletSprite;
+            bulletObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
-        // Adiciona lógica de colisão e dano
-        AttackBehaviour attackBehaviour = bulletObject.AddComponent<AttackBehaviour>();
-        attackBehaviour.damage = playerProps.GetHoldingWeaponDamage;
+            // Adiciona um colider e rigidyBody
+            BoxCollider2D collider = bulletObject.AddComponent<BoxCollider2D>();
+            //collider.center = new Vector3(0, 0.2f, 0); // x, y, z
+            collider.size = new Vector2(1.0f, 1.0f); // Largura, Altura
+            collider.isTrigger = true;
+            Rigidbody2D rigidbody = bulletObject.AddComponent<Rigidbody2D>();
+            rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            rigidbody.velocity = direction * playerProps.bulletVelocity;
+            rigidbody.gravityScale = 0;
+            //rigidbody.simulated = true;
+            //StartCoroutine(MoveBullet(bulletObject));
 
-        StartCoroutine(CanAttackAfterDelay(0.5f));
-        //StartCoroutine(MoveBullet(bulletObject));
-        Destroy(bulletObject, playerProps.bulletAttackDuration);
+            // Adiciona lógica de colisão e dano
+            AttackBehaviour attackBehaviour = bulletObject.AddComponent<AttackBehaviour>();
+            attackBehaviour.damage = playerProps.GetHoldingWeaponDamage;
+
+            Destroy(bulletObject, playerProps.bulletAttackDuration);
+        }
+        StartCoroutine(CanAttackAfterDelay(playerProps.GetGunDelayBetweenShots));
     }
 
     // Utils ////////////////////////////////////////////////
@@ -390,4 +394,28 @@ public class PlayerActionController : MonoBehaviour
 
     //    return leftHits.Union(rightHits);
     //}
+
+    private List<Vector3> GenerateRotatedDirections(Vector3 startingVector, int totalAmmount)
+    {
+        List<Vector3> directions = new(totalAmmount);
+        float[] angles = { 45f, -45f, 30f, -30f, 15f, -15f, 0f };
+        int maxLimit = angles.Length;
+        int ammountToGenerate = totalAmmount - 1;
+
+        directions.Add(startingVector);
+
+        for (int i = 0; i < ammountToGenerate && i < maxLimit; i++)
+        {
+            Vector3 rotatedDirection = Quaternion.Euler(0, 0, angles[i]) * startingVector;
+            directions.Add(rotatedDirection);
+        }
+
+        // Adiciona o vetor com 0 graus de rotação até completar total ammount
+        while (directions.Count < ammountToGenerate)
+        {
+            directions.Add(startingVector); 
+        }
+
+        return directions;
+    }
 }
