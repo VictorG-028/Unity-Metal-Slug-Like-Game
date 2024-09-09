@@ -6,19 +6,19 @@ using static PlayerProperties;
 
 public class PlayerActionController : MonoBehaviour
 {
-    [SerializeField] Transform playerTransform = null;
-    [SerializeField] Rigidbody2D playerRigidyBody      = null;
-    [SerializeField] Animator playerAnimator           = null;
-    [SerializeField] PlayerProperties playerProps      = null;
-    //[SerializeField] Camera mainCamera                 = null;
-    //[SerializeField] ParticleSystem gunShotEffect      = null;
-    [SerializeField] GameObject gunShotGO              = null;
-    [SerializeField] Sprite bulletSprite               = null;
-    [SerializeField] Transform armTransform            = null;
-    [SerializeField] Vector3[] armCachedPositionsRun   = null;
-    [SerializeField] Vector3[] armCachedPositionsJump  = null;
-    [SerializeField] bool[] armCachedIsCalculatedRun   = null;
-    [SerializeField] bool[] armCacheIsCalculatedJump   = null;
+    [SerializeField] Transform playerTransform          = null;
+    [SerializeField] Rigidbody2D playerRigidyBody       = null;
+    [SerializeField] Animator playerAnimator            = null;
+    [SerializeField] PlayerProperties playerProps       = null;
+    //[SerializeField] Camera mainCamera                  = null;
+    [SerializeField] ParticleSystem gunShotMuzzleEffect = null;
+    [SerializeField] GameObject gunShotGO               = null;
+    [SerializeField] Sprite bulletSprite                = null;
+    [SerializeField] Transform armTransform             = null;
+    [SerializeField] Vector3[] armCachedPositionsRun    = null;
+    [SerializeField] Vector3[] armCachedPositionsJump   = null;
+    [SerializeField] bool[] armCachedIsCalculatedRun    = null;
+    [SerializeField] bool[] armCacheIsCalculatedJump    = null;
 
     private float horizontalSpeed = 0f;
     private Vector3 armInitialLocalPosition = Vector3.zero;
@@ -34,9 +34,9 @@ public class PlayerActionController : MonoBehaviour
         if (!playerAnimator) { playerAnimator = GameObject.Find("Player").GetComponent<Animator>(); }
         if (!playerProps) { playerProps = GameObject.Find("Player").GetComponent<PlayerProperties>(); }
         //if (!mainCamera) { mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>(); }
-        //if (!gunShotEffect) { gunShotEffect = GameObject.Find("Gun Shot Effect").GetComponent<ParticleSystem>(); }
+        if (!gunShotMuzzleEffect) { gunShotMuzzleEffect = GameObject.Find("Gun Shot Muzzle Effect").GetComponent<ParticleSystem>(); }
         if (!gunShotGO) { gunShotGO = GameObject.Find("Gun Point"); }
-        if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("TODO"); }
+        if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("Assets/Sprites/bullet_sprite.png"); }
         if (!armTransform && playerArm) { armTransform = playerArm.transform; }
         if (armCachedPositionsRun == null) { armCachedPositionsRun = new Vector3[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de andar
         if (armCachedPositionsJump == null) { armCachedPositionsJump = new Vector3[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de pular
@@ -178,16 +178,15 @@ public class PlayerActionController : MonoBehaviour
 
     private void ShootBullet(bool shouldSubtractAmmo)
     {
-        // TODO: Play gunShotEffect Visual Effect
-        // gunShotGO must be positioned on the gun end
-        //gunShotEffect.Play();
-
-
         playerProps.canAttack = false;
-        
+
+
         if (shouldSubtractAmmo) playerProps.SubtractAmmo(1);
 
         Vector3 lookDirection = CalculateLookDirection();
+
+        gunShotMuzzleEffect.transform.position = playerProps.GetGunBarrelPoint.position - 0.2f * lookDirection; // Gambiarra pra coocar na posição do cano da arma
+        gunShotMuzzleEffect.Play();
 
         GameObject bulletObject = new("Bullet") { tag = "Attack" };
         //bulletObject.transform.position = transform.position + lookDirection * playerProps.startBulletDistance;

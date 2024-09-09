@@ -38,7 +38,7 @@ public class BasicEnemyBehavior : MonoBehaviour
     {
         if (enemyProps.canAttack)
         {
-            print($"Inimigo {this.name} deve atirar");
+            //print($"Inimigo {this.name} deve atirar");
             ShootBullet();
         }
     }
