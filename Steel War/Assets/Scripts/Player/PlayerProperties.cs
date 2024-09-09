@@ -2,11 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 public class PlayerProperties : MonoBehaviour

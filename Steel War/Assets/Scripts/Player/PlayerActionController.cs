@@ -10,7 +10,6 @@ public class PlayerActionController : MonoBehaviour
     [SerializeField] Rigidbody2D playerRigidyBody       = null;
     [SerializeField] Animator playerAnimator            = null;
     [SerializeField] PlayerProperties playerProps       = null;
-    //[SerializeField] Camera mainCamera                  = null;
     [SerializeField] ParticleSystem gunShotMuzzleEffect = null;
     [SerializeField] GameObject gunShotGO               = null;
     [SerializeField] Sprite bulletSprite                = null;
@@ -27,14 +26,15 @@ public class PlayerActionController : MonoBehaviour
 
     void OnValidate()
     {
+        GameObject player = GameObject.Find("Player");
         GameObject playerArm = GameObject.Find("Arm");
+        GameObject muzzleEffect = GameObject.Find("Gun Shot Muzzle Effect");
 
-        if (!playerTransform) { playerTransform = GameObject.Find("Player").GetComponent<Transform>(); }
-        if (!playerRigidyBody) { playerRigidyBody = GameObject.Find("Player").GetComponent<Rigidbody2D>(); }
-        if (!playerAnimator) { playerAnimator = GameObject.Find("Player").GetComponent<Animator>(); }
-        if (!playerProps) { playerProps = GameObject.Find("Player").GetComponent<PlayerProperties>(); }
-        //if (!mainCamera) { mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>(); }
-        if (!gunShotMuzzleEffect) { gunShotMuzzleEffect = GameObject.Find("Gun Shot Muzzle Effect").GetComponent<ParticleSystem>(); }
+        if (!playerTransform) { playerTransform = player.GetComponent<Transform>(); }
+        if (!playerRigidyBody) { playerRigidyBody = player.GetComponent<Rigidbody2D>(); }
+        if (!playerAnimator) { playerAnimator = player.GetComponent<Animator>(); }
+        if (!playerProps) { playerProps = player.GetComponent<PlayerProperties>(); }
+        if (!gunShotMuzzleEffect) { gunShotMuzzleEffect = muzzleEffect.GetComponent<ParticleSystem>(); }
         if (!gunShotGO) { gunShotGO = GameObject.Find("Gun Point"); }
         if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("Assets/Sprites/bullet_sprite.png"); }
         if (!armTransform && playerArm) { armTransform = playerArm.transform; }

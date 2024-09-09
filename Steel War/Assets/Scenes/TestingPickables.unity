@@ -8033,6 +8033,11 @@ Transform:
   - {fileID: 472768461}
   m_Father: {fileID: 1062942640}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!198 &1267600278 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+  m_PrefabInstance: {fileID: 3478940661377260888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1313907131
 GameObject:
   m_ObjectHideFlags: 0
@@ -14813,7 +14818,7 @@ ParticleSystem:
   m_GameObject: {fileID: 2047292606}
   serializedVersion: 8
   lengthInSec: 1
-  simulationSpeed: 3
+  simulationSpeed: 5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -15058,7 +15063,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -20096,6 +20101,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9148550411086247219}
     m_Modifications:
+    - target: {fileID: 3401795293605018150, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: gunShotGO
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3401795293605018150, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: gunShotMuzzleEffect
+      value: 
+      objectReference: {fileID: 1267600278}
     - target: {fileID: 4528231536405937928, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.91
