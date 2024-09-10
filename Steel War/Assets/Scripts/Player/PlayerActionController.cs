@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using static PlayerProperties;
 
@@ -183,9 +184,15 @@ public class PlayerActionController : MonoBehaviour
         if (shouldSubtractAmmo) playerProps.SubtractAmmo(1);
 
         Vector3 lookDirection = CalculateLookDirection();
-        List <Vector3> rotatedDirections = GenerateRotatedDirections(lookDirection, playerProps.GetGunBulletMultiplier);
+        List<Vector3> rotatedDirections = GenerateRotatedDirections(lookDirection, playerProps.GetGunBulletMultiplier);
 
-        gunShotMuzzleEffect.transform.position = playerProps.GetGunBarrelPoint.position - 0.2f * lookDirection; // Gambiarra pra coocar na posição do cano da arma
+
+        gunShotMuzzleEffect.transform.position = playerProps.GetGunBarrelPoint.position;// - 0.2f * lookDirection; // Gambiarra pra colocar na posição do cano da arma
+        float angle = Mathf.Atan2(lookDirection.y, lookDirection.x);
+        print($"{angle * Mathf.Rad2Deg}");
+        
+        gunShotMuzzleEffect.startRotation3D = new Vector3(0,0, -angle);
+        //gunShotMuzzleEffect.main.startRotationZ = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
         gunShotMuzzleEffect.Play();
 
 
@@ -226,7 +233,7 @@ public class PlayerActionController : MonoBehaviour
     private Vector3 CalculateLookDirection()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 direction = (mousePosition - playerTransform.position).normalized;
+        Vector3 direction = (mousePosition - playerProps.GetGunBarrelPoint.position).normalized;
         direction.z = 1; // Previne bug que faz a bala andar para trás do cenário
         //print(direction);
         return direction;

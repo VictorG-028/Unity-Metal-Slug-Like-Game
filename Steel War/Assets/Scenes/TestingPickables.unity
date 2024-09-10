@@ -8357,7 +8357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1528137414
 Transform:
   m_ObjectHideFlags: 0
@@ -20101,6 +20101,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9148550411086247219}
     m_Modifications:
+    - target: {fileID: 626600941938217990, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2438131240496655764, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2438131240496655764, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2438131240496655764, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2438131240496655764, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2438131240496655764, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3401795293605018150, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
       propertyPath: gunShotGO
       value: 
@@ -20149,6 +20173,70 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: UVModule.mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: ShapeModule.type
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: UVModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: ShapeModule.angle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: ShapeModule.arc.mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: ShapeModule.arc.value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: InitialModule.rotation3D
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: UVModule.sprites.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: -1547907473, guid: 1837afd94555d214daa2080829dbe6d4, type: 3}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: UVModule.sprites.Array.data[1].sprite
+      value: 
+      objectReference: {fileID: 1384501666, guid: 1837afd94555d214daa2080829dbe6d4, type: 3}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: UVModule.sprites.Array.data[2].sprite
+      value: 
+      objectReference: {fileID: -827689067, guid: 1837afd94555d214daa2080829dbe6d4, type: 3}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: UVModule.sprites.Array.data[3].sprite
+      value: 
+      objectReference: {fileID: -400762810, guid: 1837afd94555d214daa2080829dbe6d4, type: 3}
+    - target: {fileID: 4837560113890801640, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: UVModule.sprites.Array.data[4].sprite
+      value: 
+      objectReference: {fileID: 238369416, guid: 1837afd94555d214daa2080829dbe6d4, type: 3}
     - target: {fileID: 5467558493268333973, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
       propertyPath: m_Name
       value: Player
@@ -20162,6 +20250,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: bulletUI
+      value: 
+      objectReference: {fileID: 1878560595}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: gameState
+      value: 
+      objectReference: {fileID: 260115632}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: scoretext
+      value: 
+      objectReference: {fileID: 340335896}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: hpController
+      value: 
+      objectReference: {fileID: 143982403}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
       propertyPath: topLeftPoint
       value: 
       objectReference: {fileID: 1324629321}
@@ -20169,6 +20273,10 @@ PrefabInstance:
       propertyPath: topRightPoint
       value: 
       objectReference: {fileID: 1324629321}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: weaponImageDisplayUI
+      value: 
+      objectReference: {fileID: 1441477868}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3352206493856598234, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}

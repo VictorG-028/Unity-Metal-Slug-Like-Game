@@ -31,8 +31,8 @@ public class PlayerProperties : MonoBehaviour
     public UnityEvent OnLandEvent = null;
 
     // Private Constants
-    private readonly float minDelayBetweenShots = 0.1f;
-    private readonly float maxDelayBetweenShots = 1.0f;
+    private readonly float minDelayBetweenShots = 0.5f;
+    private readonly float maxDelayBetweenShots = 1.5f;
 
     private void OnValidate()
     {
