@@ -12,7 +12,7 @@ public class PlayerActionController : MonoBehaviour
     [SerializeField] Animator playerAnimator            = null;
     [SerializeField] PlayerProperties playerProps       = null;
     [SerializeField] ParticleSystem gunShotMuzzleEffect = null;
-    [SerializeField] GameObject gunShotGO               = null;
+    //[SerializeField] GameObject gunShotGO               = null;
     [SerializeField] Sprite bulletSprite                = null;
     [SerializeField] Transform armTransform             = null;
     [SerializeField] Vector3[] armCachedPositionsRun    = null;
@@ -36,7 +36,7 @@ public class PlayerActionController : MonoBehaviour
         if (!playerAnimator) { playerAnimator = player.GetComponent<Animator>(); }
         if (!playerProps) { playerProps = player.GetComponent<PlayerProperties>(); }
         if (!gunShotMuzzleEffect) { gunShotMuzzleEffect = muzzleEffect.GetComponent<ParticleSystem>(); }
-        if (!gunShotGO) { gunShotGO = GameObject.Find("Gun Point"); }
+        //if (!gunShotGO) { gunShotGO = GameObject.Find("Gun Point"); }
         if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("Assets/Sprites/bullet_sprite.png"); }
         if (!armTransform && playerArm) { armTransform = playerArm.transform; }
         if (armCachedPositionsRun == null) { armCachedPositionsRun = new Vector3[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de andar
@@ -186,11 +186,10 @@ public class PlayerActionController : MonoBehaviour
         Vector3 lookDirection = CalculateLookDirection();
         List<Vector3> rotatedDirections = GenerateRotatedDirections(lookDirection, playerProps.GetGunBulletMultiplier);
 
-
+        // Muzzle particle effect
         gunShotMuzzleEffect.transform.position = playerProps.GetGunBarrelPoint.position;// - 0.2f * lookDirection; // Gambiarra pra colocar na posição do cano da arma
         float angle = Mathf.Atan2(lookDirection.y, lookDirection.x);
-        print($"{angle * Mathf.Rad2Deg}");
-        
+        //print($"{angle * Mathf.Rad2Deg}");
         gunShotMuzzleEffect.startRotation3D = new Vector3(0,0, -angle);
         //gunShotMuzzleEffect.main.startRotationZ = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
         gunShotMuzzleEffect.Play();
