@@ -149,11 +149,21 @@ public class PlayerProperties : MonoBehaviour
         }
     }
 
-    private void TakeDamageEnterLogic(Collision2D other)
+      public void TakeDamage(int damageAmount)
     {
-        if (other.gameObject.CompareTag("Enemy") && !iFrame)
+        if (!iFrame)
         {
-            TakeDamage(1);
+            HP -= damageAmount;
+            //hpController.UpdatePlayerUI(); // TODO
+            Debug.Log($"O inimigo atacou o jogador! {HP}/{maxHP}");
+
+            if (HP <= 0)
+            {
+                gameState.Restart();
+            }
+
+            iFrame = true;
+            StartCoroutine(DisableIFrameAfterDelay(2.0f)); // Desativa iFrame após 2 segundos
         }
     }
 
