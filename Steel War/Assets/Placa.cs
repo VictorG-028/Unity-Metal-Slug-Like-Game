@@ -28,7 +28,7 @@ public class Placa : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))  // Certifique-se de marcar o item com a Tag "Item"
         {
 
-            ShowPickupText("Pressione a tecla 'Q' para ");
+            ShowPickupText("Pressione a tecla 'Q' para Mover a Ponte");
         }
    
 

@@ -15,6 +15,8 @@ MonoBehaviour:
   weaponName: Shotgun
   damage: 3
   baseMaxAmmo: 10
-  currentAmmo: 10
+  currentAmmo: 7
+  fireRate: 3
+  bulletMultiplier: 3
   sprite: {fileID: 21300000, guid: 2692719357da3e2469f2395a3cfeb6d8, type: 3}
-  cursor: {fileID: 2800000, guid: f58972b6cfcfecf4885486a5c75ab745, type: 3}
+  cursor: {fileID: 2800000, guid: 811c4d67ed3e1e143a993f5084902bec, type: 3}

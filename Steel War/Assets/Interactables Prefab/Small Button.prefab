@@ -4875,7 +4875,7 @@ MonoBehaviour:
   outlinedTurnedOffSprite: {fileID: 1925087017, guid: 6e473a34654c8474a97d7889bfbaa020, type: 3}
   outlinedTurnedOnSprite: {fileID: -707804906, guid: 6e473a34654c8474a97d7889bfbaa020, type: 3}
   playerProps: {fileID: 0}
-  hoverCursor: {fileID: 2800000, guid: 2af1dbbb6a2cd8b40814f4cf07d9670b, type: 3}
+  hoverCursor: {fileID: 2800000, guid: f04652214599f0c4e9e130a0ec2d8b7a, type: 3}
   highlightEffect: {fileID: 2523328751394600010}
   minDistanceThreshold: 30
   disableAttackWhenHover: 0

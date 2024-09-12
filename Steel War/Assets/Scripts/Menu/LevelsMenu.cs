@@ -11,10 +11,12 @@ public class LevelsMenu : MonoBehaviour
         int unlockedlevel = PlayerPrefs.GetInt("UnlockedLevel", 1);
         for (int i = 0; i < buttons.Length; i++)
         {
-            buttons[i].interactable = false;
+            //buttons[i].interactable = false;
+            buttons[i].interactable = GameStateStatic.IsLevelCompleted(i+1);
         }
         for (int i = 0; i < unlockedlevel; i++)
         {
+            //print($"{unlockedlevel} = unlockedlevel | IsLevelCompleted(1) = {GameStateStatic.IsLevelCompleted(1)}");
             buttons[i].interactable = true;
         }
     }

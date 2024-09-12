@@ -8,15 +8,24 @@ using UnityEngine;
 public class GameStateStatic : MonoBehaviour
 {
     static public string currentLevel;
-    // Start is called before the first frame update
+    static public Dictionary<int, bool> completedLevels = new();
+
+    
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public static void CompleteLevel(int levelIndex)
     {
-        
+        if (!completedLevels.ContainsKey(levelIndex))
+        {
+            completedLevels.Add(levelIndex, true);
+        }
+    }
+
+    public static bool IsLevelCompleted(int levelIndex)
+    {
+        return completedLevels.ContainsKey(levelIndex) && completedLevels[levelIndex];
     }
 }

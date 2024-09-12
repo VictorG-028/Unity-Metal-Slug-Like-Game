@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class InteractableObserver : MonoBehaviour
 {
     [SerializeField] private Interactable interactable;
+    [SerializeField] [Range(0, 3)] int shouldEndStage = 0;
 
     private void Start()
     {
@@ -20,11 +21,15 @@ public class InteractableObserver : MonoBehaviour
 
     private void HandleStateChanged(bool isTurnedOn)
     {
-        if (isTurnedOn)
+        if (shouldEndStage > 0 && isTurnedOn)
         {
             print("Terminou a fase");
             SceneManager.LoadScene("Main Menu");
-            // TODO - marcar que completou a fase, fazer animação de finalização e carregar a cena de seleção de fase
+
+            // TODO - fazer animação de finalização
+
+            PlayerPrefs.SetInt("UnlockedLevel", 2);
+            GameStateStatic.CompleteLevel(shouldEndStage);
         }
     }
 

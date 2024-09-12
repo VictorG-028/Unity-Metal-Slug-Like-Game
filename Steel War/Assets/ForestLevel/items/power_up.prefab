@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4482250580209080907}
   - component: {fileID: 6630229350709894714}
   - component: {fileID: -1688315533510223933}
-  - component: {fileID: -6415751728644608152}
+  - component: {fileID: 7011745112253348057}
   m_Layer: 0
   m_Name: power_up
   m_TagString: Holdable Weapon
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6875, y: 0.625}
   m_EdgeRadius: 0
---- !u!114 &-6415751728644608152
+--- !u!114 &7011745112253348057
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 975395928196968187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72ee3927afe28cf4ebaa67874a70d3a5, type: 3}
+  m_Script: {fileID: 11500000, guid: e6abb2ca7dd96514aa43333d39a34fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerProps: {fileID: 0}
+  weaponIndex: 2

@@ -16,7 +16,6 @@ public class AttackBehaviour : MonoBehaviour
         if (other.transform.CompareTag("Player") && isShootedByEnemy)
         {
             Debug.Log($"[OnTriggerEnter2D] Bala colidiu com {other} {other.transform.name} {other.transform.tag}");
-            print("DEVERIA entrar aqui!!!");
             PlayerProperties playerProps = other.gameObject.GetComponent<PlayerProperties>();
 
             playerProps.TakeDamage(damage);
@@ -25,7 +24,6 @@ public class AttackBehaviour : MonoBehaviour
         else if (other.transform.CompareTag("Enemy") && !isShootedByEnemy)
         {
             Debug.Log($"[OnTriggerEnter2D] Bala colidiu com {other} {other.transform.name} {other.transform.tag}");
-            print("Não deveria entrar aqui");
             EnemyProperties enemyProps = other.gameObject.GetComponent<EnemyProperties>();
 
             enemyProps.TakeDamage(damage);

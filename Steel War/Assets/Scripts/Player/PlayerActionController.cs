@@ -1,21 +1,24 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using static PlayerProperties;
 
 public class PlayerActionController : MonoBehaviour
 {
-    [SerializeField] Transform playerTransform = null;
-    [SerializeField] Rigidbody2D playerRigidyBody      = null;
-    [SerializeField] Animator playerAnimator           = null;
-    [SerializeField] PlayerProperties playerProps      = null;
-    //[SerializeField] Camera mainCamera                 = null;
-    //[SerializeField] ParticleSystem gunShotEffect      = null;
-    [SerializeField] GameObject gunShotGO              = null;
-    [SerializeField] Sprite bulletSprite               = null;
-    [SerializeField] Transform armTransform            = null;
-    [SerializeField] Vector3[] armCachedPositionsRun   = null;
-    [SerializeField] Vector3[] armCachedPositionsJump  = null;
-    [SerializeField] bool[] armCachedIsCalculatedRun   = null;
-    [SerializeField] bool[] armCacheIsCalculatedJump   = null;
+    [SerializeField] Transform playerTransform          = null;
+    [SerializeField] Rigidbody2D playerRigidyBody       = null;
+    [SerializeField] Animator playerAnimator            = null;
+    [SerializeField] PlayerProperties playerProps       = null;
+    [SerializeField] ParticleSystem gunShotMuzzleEffect = null;
+    //[SerializeField] GameObject gunShotGO               = null;
+    [SerializeField] Sprite bulletSprite                = null;
+    [SerializeField] Transform armTransform             = null;
+    [SerializeField] Vector3[] armCachedPositionsRun    = null;
+    [SerializeField] Vector3[] armCachedPositionsJump   = null;
+    [SerializeField] bool[] armCachedIsCalculatedRun    = null;
+    [SerializeField] bool[] armCacheIsCalculatedJump    = null;
 
     private float horizontalSpeed = 0f;
     private Vector3 armInitialLocalPosition = Vector3.zero;
@@ -24,15 +27,18 @@ public class PlayerActionController : MonoBehaviour
 
     void OnValidate()
     {
-        if (!playerTransform) { playerTransform = GameObject.Find("Player").GetComponent<Transform>(); }
-        if (!playerRigidyBody) { playerRigidyBody = GameObject.Find("Player").GetComponent<Rigidbody2D>(); }
-        if (!playerAnimator) { playerAnimator = GameObject.Find("Player").GetComponent<Animator>(); }
-        if (!playerProps) { playerProps = GameObject.Find("Player").GetComponent<PlayerProperties>(); }
-        //if (!mainCamera) { mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>(); }
-        //if (!gunShotEffect) { gunShotEffect = GameObject.Find("Gun Shot Effect").GetComponent<ParticleSystem>(); }
-        if (!gunShotGO) { gunShotGO = GameObject.Find("Gun Point"); }
-        if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("TODO"); }
-        if (!armTransform) { armTransform = GameObject.FindGameObjectWithTag("Player Arm").transform; }
+        GameObject player = GameObject.Find("Player");
+        GameObject playerArm = GameObject.Find("Arm");
+        GameObject muzzleEffect = GameObject.Find("Gun Shot Muzzle Effect");
+
+        if (!playerTransform) { playerTransform = player.GetComponent<Transform>(); }
+        if (!playerRigidyBody) { playerRigidyBody = player.GetComponent<Rigidbody2D>(); }
+        if (!playerAnimator) { playerAnimator = player.GetComponent<Animator>(); }
+        if (!playerProps) { playerProps = player.GetComponent<PlayerProperties>(); }
+        if (!gunShotMuzzleEffect) { gunShotMuzzleEffect = muzzleEffect.GetComponent<ParticleSystem>(); }
+        //if (!gunShotGO) { gunShotGO = GameObject.Find("Gun Point"); }
+        if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("Assets/Sprites/bullet_sprite.png"); }
+        if (!armTransform && playerArm) { armTransform = playerArm.transform; }
         if (armCachedPositionsRun == null) { armCachedPositionsRun = new Vector3[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de andar
         if (armCachedPositionsJump == null) { armCachedPositionsJump = new Vector3[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de pular
         if (armCachedIsCalculatedRun == null) { armCachedIsCalculatedRun = new bool[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de pular
@@ -84,7 +90,7 @@ public class PlayerActionController : MonoBehaviour
                 playerAnimator.SetBool("isJumping", false);
                 playerAnimator.SetBool("isRunning", false);
 
-                // TODO - movar código do script PlatformCollision para aqui
+                StartCoroutine(DisableCollision());
             }
         }
         else if (Input.GetButtonDown("Jump") && Input.GetKeyDown(KeyCode.W))
@@ -98,6 +104,8 @@ public class PlayerActionController : MonoBehaviour
                 playerProps.remainingJumps--; // Decrementa o número de pulos restantes
                 playerProps.isOnGround = false;
                 playerProps.canJump = false;
+
+                //StartCoroutine(ToggleAbovePlatformsCollision());
                 StartCoroutine(DelayedCheckOnGround(0.2f));
             }
         }
@@ -121,34 +129,30 @@ public class PlayerActionController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Z))
         {
-            playerProps.HoldOtherWeapon(0); // Troca para faca
-            playerProps.isUsingPistolOrKnife = true;
+            playerProps.HoldOtherWeapon(WeaponIndex.BareHand);
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            playerProps.HoldOtherWeapon(1); // Troca para pistola
-            playerProps.isUsingPistolOrKnife = true;
+            playerProps.HoldOtherWeapon(WeaponIndex.Pistol);
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            playerProps.HoldOtherWeapon(2); // Troca para AK-47
-            playerProps.isUsingPistolOrKnife = false;
+            playerProps.HoldOtherWeapon(WeaponIndex.AK47);
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            playerProps.HoldOtherWeapon(3); // Troca para shotgun
-            playerProps.isUsingPistolOrKnife = false;
+            playerProps.HoldOtherWeapon(WeaponIndex.Shotgun);
         }
     }
 
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.contacts[0].normal.y > 0.5f) // Verifica se colidiu com o chão
-        {
-            playerProps.remainingJumps = playerProps.maxJumps; // Reseta o número de pulos ao tocar o chão
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.contacts[0].normal.y > 0.5f) // Verifica se colidiu com o chão
+    //    {
+    //        playerProps.remainingJumps = playerProps.maxJumps; // Reseta o número de pulos ao tocar o chão
+    //    }
+    //}
 
     private void MelleAttack()
     {
@@ -175,45 +179,52 @@ public class PlayerActionController : MonoBehaviour
 
     private void ShootBullet(bool shouldSubtractAmmo)
     {
-        // TODO: Play gunShotEffect Visual Effect
-        // gunShotGO must be positioned on the gun end
-        //gunShotEffect.Play();
-
-
         playerProps.canAttack = false;
-        
+
         if (shouldSubtractAmmo) playerProps.SubtractAmmo(1);
-        playerProps.UpdateBulletUI();
 
         Vector3 lookDirection = CalculateLookDirection();
+        List<Vector3> rotatedDirections = GenerateRotatedDirections(lookDirection, playerProps.GetGunBulletMultiplier);
 
-        GameObject bulletObject = new("Bullet") { tag = "Attack" };
-        //bulletObject.transform.position = transform.position + lookDirection * playerProps.startBulletDistance;
-        bulletObject.transform.position = playerProps.GetGunBarrelPoint.position;
+        // Muzzle particle effect
+        gunShotMuzzleEffect.transform.position = playerProps.GetGunBarrelPoint.position;// - 0.2f * lookDirection; // Gambiarra pra colocar na posição do cano da arma
+        float angle = Mathf.Atan2(lookDirection.y, lookDirection.x);
+        //print($"{angle * Mathf.Rad2Deg}");
+        gunShotMuzzleEffect.startRotation3D = new Vector3(0,0, -angle);
+        //gunShotMuzzleEffect.main.startRotationZ = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+        gunShotMuzzleEffect.Play();
 
-        // Adiciona um sprite renderer com um sprite
-        SpriteRenderer spriteRenderer = bulletObject.AddComponent<SpriteRenderer>();
-        spriteRenderer.sprite = bulletSprite;
-        bulletObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
-        // Adiciona um colider e rigidyBody
-        BoxCollider2D collider = bulletObject.AddComponent<BoxCollider2D>();
-        //collider.center = new Vector3(0, 0.2f, 0); // x, y, z
-        collider.size = new Vector2(1.0f, 1.0f); // Largura, Altura
-        collider.isTrigger = true;
-        Rigidbody2D rigidbody = bulletObject.AddComponent<Rigidbody2D>();
-        rigidbody.bodyType = RigidbodyType2D.Dynamic;
-        rigidbody.velocity = lookDirection * playerProps.bulletVelocity;
-        rigidbody.gravityScale = 0;
-        //rigidbody.simulated = true;
+        foreach (Vector3 direction in rotatedDirections)
+        {
+            GameObject bulletObject = new("Bullet") { tag = "Attack" };
+            //bulletObject.transform.position = transform.position + lookDirection * playerProps.startBulletDistance;
+            bulletObject.transform.position = playerProps.GetGunBarrelPoint.position;
 
-        // Adiciona lógica de colisão e dano
-        AttackBehaviour attackBehaviour = bulletObject.AddComponent<AttackBehaviour>();
-        attackBehaviour.damage = playerProps.GetHoldingWeaponDamage;
+            // Adiciona um sprite renderer com um sprite
+            SpriteRenderer spriteRenderer = bulletObject.AddComponent<SpriteRenderer>();
+            spriteRenderer.sprite = bulletSprite;
+            bulletObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
-        StartCoroutine(CanAttackAfterDelay(0.5f));
-        //StartCoroutine(MoveBullet(bulletObject));
-        Destroy(bulletObject, playerProps.bulletAttackDuration);
+            // Adiciona um colider e rigidyBody
+            BoxCollider2D collider = bulletObject.AddComponent<BoxCollider2D>();
+            //collider.center = new Vector3(0, 0.2f, 0); // x, y, z
+            collider.size = new Vector2(1.0f, 1.0f); // Largura, Altura
+            collider.isTrigger = true;
+            Rigidbody2D rigidbody = bulletObject.AddComponent<Rigidbody2D>();
+            rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            rigidbody.velocity = direction * playerProps.bulletVelocity;
+            rigidbody.gravityScale = 0;
+            //rigidbody.simulated = true;
+            //StartCoroutine(MoveBullet(bulletObject));
+
+            // Adiciona lógica de colisão e dano
+            AttackBehaviour attackBehaviour = bulletObject.AddComponent<AttackBehaviour>();
+            attackBehaviour.damage = playerProps.GetHoldingWeaponDamage;
+
+            Destroy(bulletObject, playerProps.bulletAttackDuration);
+        }
+        StartCoroutine(CanAttackAfterDelay(playerProps.GetGunDelayBetweenShots));
     }
 
     // Utils ////////////////////////////////////////////////
@@ -221,26 +232,26 @@ public class PlayerActionController : MonoBehaviour
     private Vector3 CalculateLookDirection()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 direction = (mousePosition - playerTransform.position).normalized;
+        Vector3 direction = (mousePosition - playerProps.GetGunBarrelPoint.position).normalized;
         direction.z = 1; // Previne bug que faz a bala andar para trás do cenário
         //print(direction);
         return direction;
     }
 
-    private IEnumerator MoveBullet(GameObject movingObject)
-    {
-        float timer = 0f;
-        while (timer < playerProps.bulletAttackDuration)
-        {
-            if (movingObject == null)
-                yield break; // Sai da coroutine se o objeto Bullet for destruído prematuramente
+    //private IEnumerator MoveBullet(GameObject movingObject)
+    //{
+    //    float timer = 0f;
+    //    while (timer < playerProps.bulletAttackDuration)
+    //    {
+    //        if (movingObject == null)
+    //            yield break; // Sai da coroutine se o objeto Bullet for destruído prematuramente
 
-            movingObject.transform.position += playerProps.bulletVelocity * Time.deltaTime * movingObject.transform.forward;
-            timer += Time.deltaTime;
-            yield return null; // Aguarda um frame
-        }
-        Destroy(movingObject);
-    }
+    //        movingObject.transform.position += playerProps.bulletVelocity * Time.deltaTime * movingObject.transform.forward;
+    //        timer += Time.deltaTime;
+    //        yield return null; // Aguarda um frame
+    //    }
+    //    Destroy(movingObject);
+    //}
 
     private IEnumerator DelayedCheckOnGround(float delay)
     {
@@ -262,12 +273,65 @@ public class PlayerActionController : MonoBehaviour
         }
     }
 
+    //private IEnumerator ToggleAbovePlatformsCollision()
+    //{
+    //    IEnumerable<RaycastHit2D> platforms = GetAboveOneWayPlatforms();
+
+    //    List<Collider2D> platformsColliders = platforms
+    //        .Where(hit => hit.transform.CompareTag("OneWayPlatform"))
+    //        .Select(hit => hit.transform.GetComponent<Collider2D>())
+    //        .Where(c => c != null)
+    //        .ToList();
+    //    print($"{platformsColliders.Count} {platformsColliders}");
+
+    //    platformsColliders.ForEach(collider => collider.enabled = false);
+
+    //    IEnumerable<RaycastHit2D> afterPlatforms = platforms;
+
+    //    while (true)
+    //    {
+    //        if (afterPlatforms.Count() < platforms.Count())
+    //        {
+    //            platformsColliders.ForEach(collider => collider.enabled = true);
+    //            break;
+    //        }
+    //        afterPlatforms = GetAboveOneWayPlatforms();
+    //        yield return null;
+    //    }
+    
+    //}
+
     private IEnumerator CanAttackAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         playerProps.canAttack = true;
         playerAnimator.SetBool("isUsingKnife", false);
         armTransform.gameObject.SetActive(true);
+    }
+
+    private IEnumerator DisableCollision()
+    {
+        BoxCollider2D[] platformColliders = playerProps.oneWayPlatformsBelowList
+                                                       .Select(p => p.GetComponent<BoxCollider2D>())
+                                                       .ToArray();
+        BoxCollider2D playerCollider = GetComponent<BoxCollider2D>();
+        float disableTime = 0.5f;
+
+        // Desativa a colisão para permitir que o personagem caia
+        foreach (BoxCollider2D platformCollider in platformColliders)
+        {
+            //platformCollider.enabled = false;
+            Physics2D.IgnoreCollision(playerCollider, platformCollider, true);
+        }
+
+        yield return new WaitForSeconds(disableTime);
+
+        // Reativa a colisão após o tempo especificado
+        foreach (BoxCollider2D platformCollider in platformColliders)
+        {
+            //platformCollider.enabled = true;
+            Physics2D.IgnoreCollision(playerCollider, platformCollider, false);
+        }
     }
 
     public void RepositionArmRunAnimationEvent(int t)
@@ -317,5 +381,47 @@ public class PlayerActionController : MonoBehaviour
     public void ResetArmPosition()
     {
         armTransform.localPosition = armInitialLocalPosition;
+    }
+
+    //private IEnumerable<RaycastHit2D> GetAboveOneWayPlatforms()
+    //{
+    //    RaycastHit2D[] leftHits = Physics2D.RaycastAll(
+    //        playerProps.GetTopLeftPoint.position,
+    //        Vector2.up,
+    //        15.0f,
+    //        LayerMask.GetMask("OneWayPlatform")
+    //    );
+    //    RaycastHit2D[] rightHits = Physics2D.RaycastAll(
+    //        playerProps.GetTopRightPoint.position,
+    //        Vector2.up,
+    //        15.0f,
+    //        LayerMask.GetMask("OneWayPlatform")
+    //    );
+
+    //    return leftHits.Union(rightHits);
+    //}
+
+    private List<Vector3> GenerateRotatedDirections(Vector3 startingVector, int totalAmmount)
+    {
+        List<Vector3> directions = new(totalAmmount);
+        float[] angles = { 45f, -45f, 30f, -30f, 15f, -15f, 0f };
+        int maxLimit = angles.Length;
+        int ammountToGenerate = totalAmmount - 1;
+
+        directions.Add(startingVector);
+
+        for (int i = 0; i < ammountToGenerate && i < maxLimit; i++)
+        {
+            Vector3 rotatedDirection = Quaternion.Euler(0, 0, angles[i]) * startingVector;
+            directions.Add(rotatedDirection);
+        }
+
+        // Adiciona o vetor com 0 graus de rotação até completar total ammount
+        while (directions.Count < ammountToGenerate)
+        {
+            directions.Add(startingVector); 
+        }
+
+        return directions;
     }
 }
