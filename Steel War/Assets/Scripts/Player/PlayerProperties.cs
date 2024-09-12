@@ -148,6 +148,24 @@ public class PlayerProperties : MonoBehaviour
         }
     }
 
+      public void TakeDamage(int damageAmount)
+    {
+        if (!iFrame)
+        {
+            HP -= damageAmount;
+            //hpController.UpdatePlayerUI(); // TODO
+            Debug.Log($"O inimigo atacou o jogador! {HP}/{maxHP}");
+
+            if (HP <= 0)
+            {
+                gameState.Restart();
+            }
+
+            iFrame = true;
+            StartCoroutine(DisableIFrameAfterDelay(2.0f)); // Desativa iFrame após 2 segundos
+        }
+    }
+
     private IEnumerator DisableIFrameAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
