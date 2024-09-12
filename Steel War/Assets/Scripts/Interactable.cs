@@ -67,7 +67,7 @@ public class Interactable : MonoBehaviour, IInteractable
         //    outlinedTurnedOnSprite = loadedSprites[1];
         //}
         if (!playerProps && player) { playerProps = player.GetComponent<PlayerProperties>(); }
-        //if (!hoverCursor) { hoverCursor = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/UI/can_interact_cursor.png"); }
+        //if (!hoverCursor) { hoverCursor = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/UI/interactable_sight_cursor.png"); }
         if (!highlightEffect) { highlightEffect = GetComponent<ParticleSystem>(); }
     }
 
@@ -177,25 +177,27 @@ public class Interactable : MonoBehaviour, IInteractable
         {
             highlightEffect.Stop();
             spriteRenderer.sprite = turnedOnSprite;
-            Cursor.SetCursor(playerProps.GetCursor, Vector2.zero, CursorMode.Auto);
+            
+            Cursor.SetCursor(playerProps.GetCursor, playerProps.GetHoldingWeaponCursorSize / 2, CursorMode.Auto);
         }
         else if(!isTurnedOn && !hasMouseHovering)
         {
             highlightEffect.Play();
             spriteRenderer.sprite = turnedOffSprite;
-            Cursor.SetCursor(playerProps.GetCursor, Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(playerProps.GetCursor, playerProps.GetHoldingWeaponCursorSize / 2, CursorMode.Auto);
         }
         else if (isTurnedOn && hasMouseHovering)
         {
             highlightEffect.Stop();
             spriteRenderer.sprite = turnedOnSprite;
-            Cursor.SetCursor(playerProps.GetCursor, Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(playerProps.GetCursor, playerProps.GetHoldingWeaponCursorSize / 2, CursorMode.Auto);
         }
         else if (!isTurnedOn && hasMouseHovering)
         {
             highlightEffect.Play();
             spriteRenderer.sprite = outlinedTurnedOffSprite;
-            Cursor.SetCursor(hoverCursor, Vector2.zero, CursorMode.Auto);
+            
+            Cursor.SetCursor(hoverCursor, new Vector2(hoverCursor.width, hoverCursor.height) / 2, CursorMode.Auto);
         }
     }
 
