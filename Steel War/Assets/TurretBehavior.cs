@@ -35,11 +35,14 @@ public class TurretBehavior : MonoBehaviour
     [Range(0, 10)] public int bulletDamage = 1;
 
     // Control 
+    private float distanceToPlayer = 0f;
     private float randomDelayAfterShot = 5f;
     private Vector3 direction = Vector3.zero;
     private float angle = 0f;
     private AnimatorStateInfo info;
     private bool isAwaitingInitialAnimationFinish = true;
+    private bool isActivated = false;
+    private bool isNear = false;
     private GameObject bulletObject = null;
     private SpriteRenderer bulletSpriteRenderer = null;
     private BoxCollider2D bulletCollider = null;
@@ -53,19 +56,29 @@ public class TurretBehavior : MonoBehaviour
 
     void Update()
     {
+        distanceToPlayer = CalculateDistanceToPlayer();
         direction = CalculateLookDirection();
         angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; // Ângulo entre Vector2D(1,0) e direction
         info = animator.GetCurrentAnimatorStateInfo(0);
+        isNear = distanceToPlayer <= 15f;
 
-        LookAtPlayer(angle);
-        
-        if (isAwaitingInitialAnimationFinish)
+        if (isNear && !isActivated)
         {
-            isAwaitingInitialAnimationFinish = !info.IsName("Default");
+            isActivated = true;
+            animator.SetBool("shouldActivate", true);
         }
-        else if (enemyProps.canAttack && info.IsName("Default"))
+        else if(isNear && isActivated)
         {
-            ShootBullet(-direction);
+            LookAtPlayer(angle);
+
+            if (isAwaitingInitialAnimationFinish)
+            {
+                isAwaitingInitialAnimationFinish = !info.IsName("Default");
+            }
+            else if (enemyProps.canAttack && info.IsName("Default"))
+            {
+                ShootBullet(-direction);
+            }
         }
     }
 
@@ -125,5 +138,10 @@ public class TurretBehavior : MonoBehaviour
     private Vector3 CalculateLookDirection()
     {
         return (transform.position - playerTransform.transform.position).normalized;
+    }
+
+    private float CalculateDistanceToPlayer()
+    {
+        return Vector3.Distance(transform.position, playerTransform.position); ;
     }
 }

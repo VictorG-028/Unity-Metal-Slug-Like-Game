@@ -350,9 +350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1605226dc43ffb048930ae58ef5bf560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollider: {fileID: 7580568936462062562}
-  playerProps: {fileID: 4893491036580188922}
-  dropTime: 0.5
 --- !u!1 &42835937
 GameObject:
   m_ObjectHideFlags: 0
@@ -19161,9 +19158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1605226dc43ffb048930ae58ef5bf560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCollider: {fileID: 7580568936462062562}
-  playerProps: {fileID: 4893491036580188922}
-  dropTime: 0.5
 --- !u!1 &232135148
 GameObject:
   m_ObjectHideFlags: 0
@@ -19925,7 +19919,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -20934,7 +20928,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -23833,6 +23827,11 @@ Transform:
   - {fileID: 1126990311}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1120828010 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7776011670604900341, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+  m_PrefabInstance: {fileID: 3478940661377260888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1126990310
 GameObject:
   m_ObjectHideFlags: 0
@@ -23947,6 +23946,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313907131}
   m_CullTransparentMesh: 1
+--- !u!4 &1362195520 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3682096626331498634, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+  m_PrefabInstance: {fileID: 3478940661377260888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1388884086
 GameObject:
   m_ObjectHideFlags: 0
@@ -25841,6 +25845,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: bulletUI
+      value: 
+      objectReference: {fileID: 1878560595}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: gameState
+      value: 
+      objectReference: {fileID: 260115632}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: scoretext
+      value: 
+      objectReference: {fileID: 340335896}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: hpController
+      value: 
+      objectReference: {fileID: 143982403}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: topLeftPoint
+      value: 
+      objectReference: {fileID: 1362195520}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: topRightPoint
+      value: 
+      objectReference: {fileID: 1120828010}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: playerJumpForce
+      value: 8.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7919209186085538275, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
+      propertyPath: weaponImageDisplayUI
+      value: 
+      objectReference: {fileID: 1441477868}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -25857,11 +25893,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf6e4f13c5327c46959d29ae76eeccd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!61 &7580568936462062562 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 5581048168114207895, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}
-  m_PrefabInstance: {fileID: 3478940661377260888}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8348193088089234201 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5467558493268333973, guid: b96abe0292ae54a4e87b558f698f98d3, type: 3}

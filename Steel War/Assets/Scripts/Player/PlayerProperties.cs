@@ -110,7 +110,7 @@ public class PlayerProperties : MonoBehaviour
 
     // Action Parameters
     [Range(0.0f, 10.0f)] public float playerSpeed           = 3f;
-    [Range(0.0f, 20.0f)] public float playerJumpForce       = 6.5f;
+    [Range(0.0f, 20.0f)] public float playerJumpForce       = 8.3f;
     [Range(1, 2)] public int maxJumps                       = 1;
     [Range(0.0f, 5.0f)] public float melleAttackDistance    = 5.0f;
     [Range(0.0f, 5.0f)] public float melleAttackDuration    = 1.51f;
