@@ -11,7 +11,6 @@ public class GameState : MonoBehaviour
     [SerializeField] PlayerProperties playerProps = null;
     [SerializeField] Vector3 startPosition = Vector3.zero;
     [SerializeField] TextMeshProUGUI pauseText = null;
- 
 
     private void OnValidate()
     {

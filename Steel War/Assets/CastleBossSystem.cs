@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CastleBossSystem : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class CastleBossSystem : MonoBehaviour
         if (!spriteRenderer) { spriteRenderer = GetComponent<SpriteRenderer>(); }
         if (!animator) { animator = GetComponent<Animator>(); }
     }
+
+    // Parameters
+    public bool shouldEndStage = false;
 
     // Control
     private bool isAlive = true;
@@ -37,7 +41,15 @@ public class CastleBossSystem : MonoBehaviour
             // animator.enable = true;
             // explosionParticleEffect.Play()
 
-            // TOOD - Terimnar fase 3
+            if (shouldEndStage) StartCoroutine("EndStageAfterDelay");
         }
+    }
+
+    private IEnumerable EndStageAfterDelay()
+    {
+        yield return new WaitForSeconds(2.0f);
+        GameStateStatic.CompleteLevel(3);
+        PlayerPrefs.SetInt("UnlockedLevel", 3);
+        SceneManager.LoadScene("Main menu");
     }
 }
