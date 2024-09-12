@@ -133,17 +133,20 @@ public class PlayerProperties : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        HP -= damage;
-        hpController.UpdatePlayerUI();
-        Debug.Log($"O inimigo atacou o jogador! {HP}/{maxHP}");
-
-        if (HP <= 0)
+        if (!iFrame)
         {
-            gameState.Restart();
-        }
+            HP -= damage;
+            hpController.UpdatePlayerUI();
+            Debug.Log($"O inimigo atacou o jogador! {HP}/{maxHP}");
 
-        iFrame = true;
-        StartCoroutine(DisableIFrameAfterDelay(2.0f)); // Desativa iFrame após 2 segundos
+            if (HP <= 0)
+            {
+                gameState.Restart();
+            }
+
+            iFrame = true;
+            StartCoroutine(DisableIFrameAfterDelay(2.0f)); // Desativa iFrame após 2 segundos
+        }
     }
 
     private void TakeDamageEnterLogic(Collision2D other)

@@ -25,7 +25,7 @@ public class BasicEnemyBehavior : MonoBehaviour
         if (!rb) { rb = GetComponent<Rigidbody2D>(); }
         if (!playerTransform && player) { playerTransform = player.transform; }
         if (!gunBarrelPoint) { gunBarrelPoint = transform.Find("Gun Barrel Point"); }
-        if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("TODO"); }
+        if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("Assets/Sprites/Enemy_soldier_bullet_sprite.png"); }
         if (!animator) { animator = GetComponent<Animator>(); }
         if (!spriteRenderer) { spriteRenderer = GetComponent<SpriteRenderer>(); }
     }
@@ -246,39 +246,4 @@ public class BasicEnemyBehavior : MonoBehaviour
             direction.Normalize();
         }
     }
-
-    // sketch
-
-    // CastleBossSystem
-
-    //[SerializeField] EnemyProperties[] enemyProps = null;// Make each child of Target a box with enemy properties
-    // Update
-    // if (enemyProps.Lenght == 0)
-    // {
-    // foreach (GameObject go in explosionGameObjects)
-    // foreach (Animator a in explosionAnimators) // Hardcoded explosion
-    // {
-    // gameObject.enable = true;
-    // animator.enable = true;
-    // explosionParticleEffect.Play()
-    // }
-    // }
-
-
-    // TurretBehavior
-    //[SerializeField] BoxCollider2D boxCollider = null;
-    //[SerializeField] Rigidbody2D rb = null;
-    //[SerializeField] Transform gunBarrelPoint = null;
-    //[SerializeField] Transform playerTransform = null;
-    //[SerializeField] SpriteRenderer spriteRenderer = null;
-    //[SerializeField] Animator animator = null;
-    //[SerializeField] Sprite bulletSprite = null;
-
-    // Control 
-    //private readonly float randomDelayAfterShot = (Random.value + 1f) * 5f;
-
-    // Update
-    // Make look at player
-    // shoot (and await interval randonly generated)
-
 }
