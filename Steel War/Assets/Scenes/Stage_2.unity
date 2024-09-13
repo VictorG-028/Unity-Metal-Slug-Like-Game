@@ -20192,7 +20192,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 133.63834, y: 383.77542}
+  m_AnchoredPosition: {x: 133.6383, y: 383.77542}
   m_SizeDelta: {x: 3, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &217184614
@@ -20798,7 +20798,7 @@ Transform:
   m_GameObject: {fileID: 272038349}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.057, y: 0.165, z: 0}
+  m_LocalPosition: {x: -0.246, y: 0.217, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24887,15 +24887,18 @@ MonoBehaviour:
   rb: {fileID: 922203849}
   playerTransform: {fileID: 1274413402}
   gunBarrelPoint: {fileID: 272038350}
-  bulletSprite: {fileID: 21300000, guid: 28abc6318a0143846b84fa9bbcbc3a5c, type: 3}
+  bulletSprite: {fileID: 1226779833, guid: b3170bfef436ce24781206d524581782, type: 3}
   animator: {fileID: 922203851}
   spriteRenderer: {fileID: 922203852}
   isTank: 1
-  delayBetweenAttacks: 6
+  delayBetweenAttacks: 3
   minCloseDistance: 10.5
   bulletVelocidy: 10
   bulletDuration: 10
   bulletDamage: 1
+  tankBulletDamage: 2
+  tankBulletForce: 15
+  arcHeight: 8
   walkingSpeed: 5
 --- !u!114 &922203848
 MonoBehaviour:
@@ -46193,7 +46196,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 270.63834, y: -803.22455}
+  m_AnchoredPosition: {x: 270.6383, y: -803.22455}
   m_SizeDelta: {x: 128, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2133225572

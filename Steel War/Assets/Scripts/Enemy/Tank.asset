@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3f3a7282fa65ad41a02805dd5db01fe, type: 3}
   m_Name: Tank
   m_EditorClassIdentifier: 
-  maxHP: 30
+  maxHP: 500
   hpIncreasePerStage: 5
   pointsGiven: 400
   shootingPattern: 7
