@@ -24890,15 +24890,18 @@ MonoBehaviour:
   bulletSprite: {fileID: 1226779833, guid: b3170bfef436ce24781206d524581782, type: 3}
   animator: {fileID: 922203851}
   spriteRenderer: {fileID: 922203852}
-  isTank: 1
-  delayBetweenAttacks: 3
+  isBrave: 1
+  delayBetweenAttacksMin: 2
+  delayBetweenAttacksMax: 5
   minCloseDistance: 10.5
+  maxCloseDistance: 15
   bulletVelocidy: 10
   bulletDuration: 10
   bulletDamage: 1
   tankBulletDamage: 2
   tankBulletForce: 15
-  arcHeight: 8
+  arcHeightMin: 1
+  arcHeightMax: 8
   walkingSpeed: 5
 --- !u!114 &922203848
 MonoBehaviour:
@@ -24917,8 +24920,8 @@ MonoBehaviour:
   canMove: 0
   canAttack: 1
   enemyScriptable: {fileID: 11400000, guid: 11a7eda68cf456e4bae67299f70bd76d, type: 2}
-  enemyName: Tank ENemy
-  currentHP: 5
+  enemyName: Tank Enemy
+  currentHP: 100
 --- !u!50 &922203849
 Rigidbody2D:
   serializedVersion: 4
@@ -25073,7 +25076,7 @@ Transform:
   m_GameObject: {fileID: 922203846}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 45.62, y: 2.55, z: 0}
+  m_LocalPosition: {x: 47.45, y: 2.41, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children:

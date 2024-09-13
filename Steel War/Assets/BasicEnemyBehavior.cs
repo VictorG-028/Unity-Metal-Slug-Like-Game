@@ -31,10 +31,11 @@ public class BasicEnemyBehavior : MonoBehaviour
     }
 
     // Public parameters
-    public bool isTank = false;
+    public bool isBrave = false;
     [Range(0.0f, 10.0f)] public float delayBetweenAttacksMin = 2.0f;
     [Range(0.0f, 10.0f)] public float delayBetweenAttacksMax = 5.0f;
-    [Range(0.0f, 15.0f)] public float minCloseDistance = 10.5f;
+    [Range(0.0f, 15.0f)] public float minCloseDistance = 8.5f;
+    [Range(0.0f, 50.0f)] public float maxCloseDistance = 16.5f;
     [Range(1.0f, 15.0f)] public float bulletVelocidy = 10.0f;
     [Range(3.0f, 100.0f)] public float bulletDuration = 10.0f;
     [Range(0, 10)] public int bulletDamage = 1;
@@ -51,6 +52,7 @@ public class BasicEnemyBehavior : MonoBehaviour
     private bool isShooting = false;
     private bool isWalking = false;
     private bool isGoingToWalk = false;
+    private bool canShoot = false;
     private float distanceToPlayer = 0.0f;
     //private readonly object _lock = new();
     private AnimatorStateInfo info;
@@ -67,6 +69,7 @@ public class BasicEnemyBehavior : MonoBehaviour
     {
         distanceToPlayer = CalculateDistanceToPlayer();
         isGoingToWalk = distanceToPlayer < minCloseDistance;
+        canShoot = distanceToPlayer < maxCloseDistance;
         info = animator.GetCurrentAnimatorStateInfo(0);
         //isShooting = info.IsName("Shooting");
         //isWalking = info.IsName("Walking") || info.IsName("Pulling In Gun");
@@ -76,7 +79,7 @@ public class BasicEnemyBehavior : MonoBehaviour
         //print($"Lenght da anima��o: {info.length} | ");
         //print($"{enemyProps.canAttack} && {info.IsName("Pointing Gun Standing")} {enemyProps.canAttack && info.IsName("Pointing Gun Standing")}");
 
-        if (isAwaitingInitialAnimationFinish && ! isTank)
+        if (isAwaitingInitialAnimationFinish && ! isBrave)
         {
             isAwaitingInitialAnimationFinish = !info.IsName("Pointing Gun Standing");
         }
@@ -84,15 +87,15 @@ public class BasicEnemyBehavior : MonoBehaviour
         {
             StopShooting();
         }
-        else if (isGoingToWalk && ! isTank)
+        else if (isGoingToWalk && ! isBrave)
         {
             WalkOpositeDirection();
         }
-        else if (isWalking && ! isTank)
+        else if (isWalking && ! isBrave)
         {
             StopWalking();
         }
-        else if (enemyProps.canAttack && (info.IsName("Pointing Gun Standing") || isTank))
+        else if (enemyProps.canAttack && (info.IsName("Pointing Gun Standing") || (enemyProps.enemyScriptable.Pattern == ShootingPattern.Tank)) && canShoot)
         {
             //print($"Inimigo {this.name} deve atirar");
             ShootBullet();

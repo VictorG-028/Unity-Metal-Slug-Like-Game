@@ -19822,12 +19822,18 @@ MonoBehaviour:
   bulletSprite: {fileID: 21300000, guid: 28abc6318a0143846b84fa9bbcbc3a5c, type: 3}
   animator: {fileID: 442271511}
   spriteRenderer: {fileID: 442271512}
-  isTank: 0
-  delayBetweenAttacks: 6
-  minCloseDistance: 10.5
+  isBrave: 0
+  delayBetweenAttacksMin: 2
+  delayBetweenAttacksMax: 5
+  minCloseDistance: 8.5
+  maxCloseDistance: 16.5
   bulletVelocidy: 10
   bulletDuration: 10
   bulletDamage: 1
+  tankBulletDamage: 2
+  tankBulletForce: 15
+  arcHeightMin: 1
+  arcHeightMax: 8
   walkingSpeed: 5
 --- !u!114 &442271508
 MonoBehaviour:
@@ -20757,12 +20763,18 @@ MonoBehaviour:
   bulletSprite: {fileID: 21300000, guid: 28abc6318a0143846b84fa9bbcbc3a5c, type: 3}
   animator: {fileID: 619419598}
   spriteRenderer: {fileID: 619419599}
-  isTank: 0
-  delayBetweenAttacks: 6
-  minCloseDistance: 10.5
+  isBrave: 0
+  delayBetweenAttacksMin: 2
+  delayBetweenAttacksMax: 5
+  minCloseDistance: 8.5
+  maxCloseDistance: 16.5
   bulletVelocidy: 10
   bulletDuration: 10
   bulletDamage: 1
+  tankBulletDamage: 2
+  tankBulletForce: 15
+  arcHeightMin: 1
+  arcHeightMax: 8
   walkingSpeed: 5
 --- !u!114 &619419595
 MonoBehaviour:
@@ -24235,12 +24247,18 @@ MonoBehaviour:
   bulletSprite: {fileID: 21300000, guid: 28abc6318a0143846b84fa9bbcbc3a5c, type: 3}
   animator: {fileID: 1528137420}
   spriteRenderer: {fileID: 1528137418}
-  isTank: 0
-  delayBetweenAttacks: 6
-  minCloseDistance: 10.5
+  isBrave: 0
+  delayBetweenAttacksMin: 2
+  delayBetweenAttacksMax: 5
+  minCloseDistance: 8.5
+  maxCloseDistance: 16.5
   bulletVelocidy: 10
   bulletDuration: 10
   bulletDamage: 1
+  tankBulletDamage: 2
+  tankBulletForce: 15
+  arcHeightMin: 1
+  arcHeightMax: 8
   walkingSpeed: 5
 --- !u!95 &1528137420
 Animator:
@@ -24558,12 +24576,18 @@ MonoBehaviour:
   bulletSprite: {fileID: 21300000, guid: 28abc6318a0143846b84fa9bbcbc3a5c, type: 3}
   animator: {fileID: 1553314977}
   spriteRenderer: {fileID: 1553314978}
-  isTank: 1
-  delayBetweenAttacks: 6
-  minCloseDistance: 10.5
+  isBrave: 0
+  delayBetweenAttacksMin: 2
+  delayBetweenAttacksMax: 5
+  minCloseDistance: 8.5
+  maxCloseDistance: 16.5
   bulletVelocidy: 10
   bulletDuration: 10
   bulletDamage: 1
+  tankBulletDamage: 2
+  tankBulletForce: 15
+  arcHeightMin: 1
+  arcHeightMax: 8
   walkingSpeed: 5
 --- !u!114 &1553314974
 MonoBehaviour:
