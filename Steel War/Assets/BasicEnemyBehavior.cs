@@ -34,20 +34,25 @@ public class BasicEnemyBehavior : MonoBehaviour
 
     // Public parameters
     public bool isTank = false;
-    [Range(0.0f, 10.0f)] public float delayBetweenAttacks = 6.0f;
-    [Range(0.0f, 15.0f)] public float minCloseDistance = 10.5f;
+    [Range(0.0f, 10.0f)] public float delayBetweenAttacksMin = 2.0f;
+    [Range(0.0f, 10.0f)] public float delayBetweenAttacksMax = 5.0f;
+    [Range(0.0f, 15.0f)] public float minCloseDistance = 8.5f;
+    [Range(0.0f, 50.0f)] public float maxCloseDistance = 16.5f;
     [Range(1.0f, 15.0f)] public float bulletVelocidy = 10.0f;
     [Range(3.0f, 100.0f)] public float bulletDuration = 10.0f;
     [Range(0, 10)] public int bulletDamage = 1;
+    [Range(0, 10)] public int tankBulletDamage = 2;
+    [Range(1.0f, 15.0f)] public float tankBulletForce = 15.0f;
+    [Range(1.0f, 15.0f)] public float arcHeightMin = 1.0f;
+    [Range(1.0f, 15.0f)] public float arcHeightMax = 8.0f;
     [Range(1.0f, 10.0f)] public float walkingSpeed = 5f;
 
     // Control
-    //private bool isBusyDoingAction = false;
-    //private bool hasTriggerredAnimation = false;
     private bool isAwaitingInitialAnimationFinish = true;
     private bool isShooting = false;
     private bool isWalking = false;
     private bool isGoingToWalk = false;
+    private bool canShoot = false;
     private float distanceToPlayer = 0.0f;
     //private readonly object _lock = new();
     private AnimatorStateInfo info;
@@ -64,16 +69,17 @@ public class BasicEnemyBehavior : MonoBehaviour
     {
         distanceToPlayer = CalculateDistanceToPlayer();
         isGoingToWalk = distanceToPlayer < minCloseDistance;
+        canShoot = distanceToPlayer < maxCloseDistance;
         info = animator.GetCurrentAnimatorStateInfo(0);
         //isShooting = info.IsName("Shooting");
         //isWalking = info.IsName("Walking") || info.IsName("Pulling In Gun");
         //isStandingStill = info.IsName("PointingGunStanding");
 
-        //print($"Distância: {distanceToPlayer} < {minCloseDistance} -> {isGoingToWalk}");
-        //print($"Lenght da animação: {info.length} | ");
+        //print($"Distï¿½ncia: {distanceToPlayer} < {minCloseDistance} -> {isGoingToWalk}");
+        //print($"Lenght da animaï¿½ï¿½o: {info.length} | ");
         //print($"{enemyProps.canAttack} && {info.IsName("Pointing Gun Standing")} {enemyProps.canAttack && info.IsName("Pointing Gun Standing")}");
 
-        if (isAwaitingInitialAnimationFinish && !isTank)
+        if (isAwaitingInitialAnimationFinish && ! isTank)
         {
             isAwaitingInitialAnimationFinish = !info.IsName("Pointing Gun Standing");
         }
@@ -81,15 +87,15 @@ public class BasicEnemyBehavior : MonoBehaviour
         {
             StopShooting();
         }
-        else if (isGoingToWalk && !isTank)
+        else if (isGoingToWalk && ! isTank)
         {
             WalkOpositeDirection();
         }
-        else if (isWalking && !isTank)
+        else if (isWalking && ! isTank)
         {
             StopWalking();
         }
-        else if (enemyProps.canAttack && (info.IsName("Pointing Gun Standing") || isTank))
+        else if (enemyProps.canAttack && (info.IsName("Pointing Gun Standing") || (enemyProps.enemyScriptable.Pattern == ShootingPattern.Tank)) && canShoot)
         {
             //print($"Inimigo {this.name} deve atirar");
             ShootBullet();
@@ -99,44 +105,59 @@ public class BasicEnemyBehavior : MonoBehaviour
     private void ShootBullet()
     {
         enemyProps.canAttack = false;
-        spriteRenderer.flipX = !IsPlayerOnLeftSide(); // Make sprite face the oposite side of the player
+        spriteRenderer.flipX = !IsPlayerOnLeftSide(); // Make sprite face the opposite side of the player
         isShooting = true;
         animator.SetBool("isShooting", true);
-        //animator.SetTrigger("isShootingTrigger");
-        //animator.Play("Shooting 0");
 
         lookDirection = CalculateLookDirection();
 
-        bulletObject = new("Bullet") { tag = "Attack" };
-        bulletObject.transform.position = gunBarrelPoint.position;
-
-        // Adiciona um sprite renderer com um sprite
-        bulletSpriteRenderer = bulletObject.AddComponent<SpriteRenderer>();
-        bulletSpriteRenderer.sprite = bulletSprite;
-        bulletObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-
-        // Adiciona um colider e rigidyBody
-        bulletCollider = bulletObject.AddComponent<BoxCollider2D>();
-        bulletCollider.size = new Vector2(1.0f, 1.0f); // Largura, Altura
-        bulletCollider.isTrigger = true;
-        bulletRigidbody = bulletObject.AddComponent<Rigidbody2D>();
-        bulletRigidbody.bodyType = RigidbodyType2D.Dynamic;
-        bulletRigidbody.velocity = lookDirection * bulletVelocidy;
-        bulletRigidbody.gravityScale = 0;
-        if (isTank)
+        // Check if the enemy is a tank
+        if (enemyProps.enemyScriptable.Pattern == ShootingPattern.Tank)
         {
-            bulletRigidbody.gravityScale = 0.75f;
-            audio.Play();
+            StartCoroutine(TankShot(0.6f));
         }
+        else
+        {
+            // Regular bullet behavior for other enemies
+            bulletObject = new("Bullet") { tag = "Attack" };
+            bulletObject.transform.position = gunBarrelPoint.position;
 
-        // Adiciona lógica de colisão e dano
-        bulletAttackBehaviour = bulletObject.AddComponent<AttackBehaviour>();
-        bulletAttackBehaviour.damage = bulletDamage;
-        bulletAttackBehaviour.isShootedByEnemy = true;
+            // Adiciona um sprite renderer com um sprite
+            bulletSpriteRenderer = bulletObject.AddComponent<SpriteRenderer>();
+            bulletSpriteRenderer.sprite = bulletSprite;
+            bulletObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
-        StartCoroutine(CanAttackAfterDelay(delayBetweenAttacks));
-        Destroy(bulletObject, bulletDuration);
+            // Adiciona um colider e rigidyBody
+            bulletCollider = bulletObject.AddComponent<BoxCollider2D>();
+            bulletCollider.size = new Vector2(1.0f, 1.0f); // Largura, Altura
+            bulletCollider.isTrigger = true;
+            bulletRigidbody = bulletObject.AddComponent<Rigidbody2D>();
+            bulletRigidbody.bodyType = RigidbodyType2D.Dynamic;
+            bulletRigidbody.velocity = lookDirection * bulletVelocidy;
+            bulletRigidbody.gravityScale = 0;
+        
+            // Adiciona lï¿½gica de colisï¿½o e dano
+            bulletAttackBehaviour = bulletObject.AddComponent<AttackBehaviour>();
+            bulletAttackBehaviour.damage = bulletDamage;
+            bulletAttackBehaviour.isShootedByEnemy = true;
+
+            Destroy(bulletObject, bulletDuration);
+        }
+        
+        float randomizedDelay = UnityEngine.Random.Range(delayBetweenAttacksMin, delayBetweenAttacksMax);
+        StartCoroutine(CanAttackAfterDelay(randomizedDelay));
     }
+
+    // This method calculates the firing direction and force for the cannonball to hit the player
+    private Vector2 CalculateFiringDirection(Vector2 startPosition, Vector2 targetPosition)
+    {
+        // You can adjust this to calculate the arc for the cannonball
+        Vector2 direction = targetPosition - startPosition;
+        float randomizedArcHeight = UnityEngine.Random.Range(arcHeightMin, arcHeightMax);
+        direction.y += randomizedArcHeight; // Add a vertical component for the arc (adjust arcHeight as needed)
+        return direction.normalized;
+    }
+
 
     private void WalkOpositeDirection()
     {
@@ -150,7 +171,7 @@ public class BasicEnemyBehavior : MonoBehaviour
 
         if (info.IsName("Walking"))
         {
-            // Direção oposta ao jogador no eixo x
+            // Direï¿½ï¿½o oposta ao jogador no eixo x
             directionAwayFromPlayer = (transform.position - playerTransform.position).normalized;
             directionAwayFromPlayer = new Vector3(directionAwayFromPlayer.x, 0, 0);
 
@@ -205,7 +226,7 @@ public class BasicEnemyBehavior : MonoBehaviour
             //    return Vector3.forward;
 
             case ShootingPattern.Random:
-                if (Random.Range(0f, 100f) <= 30f) // 30% de chance de atirar em direção ao player
+                if (Random.Range(0f, 100f) <= 30f) // 30% de chance de atirar em direï¿½ï¿½o ao player
                 {
                     return (playerTransform.position - transform.position).normalized;
                 }
@@ -227,6 +248,41 @@ public class BasicEnemyBehavior : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         enemyProps.canAttack = true;
+    }
+
+    private IEnumerator TankShot(float delay)
+    {   
+        yield return new WaitForSeconds(delay);
+        // Create a larger round bullet for the tank
+        bulletObject = new("CannonBall") { tag = "Attack" };
+        bulletObject.transform.position = gunBarrelPoint.position;
+
+        bulletSpriteRenderer = bulletObject.AddComponent<SpriteRenderer>();
+        bulletSpriteRenderer.sprite = bulletSprite; // Use a round sprite for the cannonball
+        bulletObject.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f); // Make it bigger
+
+        // Add collider and rigidbody with gravity for arcing effect
+        bulletCollider = bulletObject.AddComponent<BoxCollider2D>();
+        bulletCollider.isTrigger = true; // Collides with the ground
+
+        bulletRigidbody = bulletObject.AddComponent<Rigidbody2D>();
+        bulletRigidbody.bodyType = RigidbodyType2D.Dynamic;
+        bulletRigidbody.gravityScale = 1; // Enable gravity for the arcing trajectory
+
+        // Calculate the force to make the cannonball reach the player's location
+        Vector2 targetPosition = playerTransform.position; // Assuming playerTransform is available
+        Vector2 firingDirection = CalculateFiringDirection(gunBarrelPoint.position, targetPosition);
+        bulletRigidbody.AddForce(firingDirection * tankBulletForce, ForceMode2D.Impulse);
+
+        // Add explosion behavior on impact
+        bulletAttackBehaviour = bulletObject.AddComponent<AttackBehaviour>();
+        bulletAttackBehaviour.damage = tankBulletDamage;
+        bulletAttackBehaviour.isShootedByEnemy = true;
+
+        audio.Play();
+
+        // Destroy the cannonball after a certain time or on impact
+        Destroy(bulletObject, bulletDuration);
     }
 
     private float CalculateDistanceToPlayer()
