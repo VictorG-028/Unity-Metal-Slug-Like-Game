@@ -19,7 +19,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"C:/Users/power/Desktop/metalwar/build/Build/Build;C:/Users/power/Desktop/metalwar/build/Build;C:/Users/power/Desktop/metalwar/build;C:/Users/power/Desktop/metalwar;C:/Users/power/Desktop/metalwar/Steel War/WebGL Builds;;;;;\"}"
+                "value": "{\"m_Value\":\"C:/Users/power/Desktop/metalwar/Steel War/WebGL Builds/Build/Build/Build/Build;C:/Users/power/Desktop/metalwar/Steel War/WebGL Builds/Build/Build/Build;C:/Users/power/Desktop/metalwar;;;;;;;\"}"
             }
         ]
     }

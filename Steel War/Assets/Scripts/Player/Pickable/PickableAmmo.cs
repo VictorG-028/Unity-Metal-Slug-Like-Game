@@ -16,11 +16,12 @@ public class PickableAmmo : IPickable
         }
     }
 
-    protected override void OnPickUp()
+    protected override bool OnPickUp()
     {
         foreach (WeaponIndex wi in weaponIndex)
         {
             playerProps.AddAmmoToWeaponByIndex(ammoGiven, wi);
         }
+        return false;
     }
 }

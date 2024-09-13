@@ -6,7 +6,8 @@ public class EnemyProperties : MonoBehaviour
 
     private void OnValidate()
     {
-        if (!playerProps) { playerProps = GameObject.Find("Player").GetComponent<PlayerProperties>(); }
+        GameObject player = GameObject.Find("Player");
+        if (!playerProps && player) { playerProps = player.GetComponent<PlayerProperties>(); }
     }
 
     // Actions

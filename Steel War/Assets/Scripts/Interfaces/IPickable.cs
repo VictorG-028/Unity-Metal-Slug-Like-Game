@@ -4,19 +4,20 @@ using UnityEngine;
 
 public abstract class IPickable : MonoBehaviour
 {
-    protected PlayerProperties playerProps;
-    protected AudioSource audio;
-    protected SpriteRenderer spriteRenderer;
+    protected PlayerProperties playerProps = null;
+    protected AudioSource pickUpSound = null;
+    protected SpriteRenderer spriteRenderer = null;
 
     // Control
     private bool hasBeenPicked = false;
+    private bool hasSound = false;
 
     private void OnValidate()
     {
         GameObject player = GameObject.FindWithTag("Player");
         if (!playerProps && player != null) { playerProps = player.GetComponent<PlayerProperties>(); }
-        if (!audio) { audio = GetComponent<AudioSource>(); }
-        if (!spriteRenderer) { spriteRenderer = GetComponent<SpriteRenderer>(); }
+        //if (!pickUpSound) { pickUpSound = GetComponent<AudioSource>(); } // Can't Get component on Interface
+        //if (!spriteRenderer) { spriteRenderer = GetComponent<SpriteRenderer>(); }
     }
 
     private void Awake()
@@ -25,18 +26,16 @@ public abstract class IPickable : MonoBehaviour
         if (!playerProps && player != null) { playerProps = player.GetComponent<PlayerProperties>(); }
     }
 
-    protected abstract void OnPickUp();
+    protected abstract bool OnPickUp();
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("Player") && !hasBeenPicked)
         {
             hasBeenPicked = true;
-            OnPickUp();
-            if(audio)
+            hasSound = OnPickUp();
+            if(hasSound)
             {
-                audio.Play();
-                spriteRenderer.enabled = false;
                 Destroy(gameObject, 2.0f);
             }
             else
