@@ -31,6 +31,7 @@ public class BasicEnemyBehavior : MonoBehaviour
     }
 
     // Public parameters
+    public bool isTank = false;
     [Range(0.0f, 10.0f)] public float delayBetweenAttacks = 6.0f;
     [Range(0.0f, 15.0f)] public float minCloseDistance = 10.5f;
     [Range(1.0f, 15.0f)] public float bulletVelocidy = 10.0f;
@@ -70,7 +71,7 @@ public class BasicEnemyBehavior : MonoBehaviour
         //print($"Lenght da animação: {info.length} | ");
         //print($"{enemyProps.canAttack} && {info.IsName("Pointing Gun Standing")} {enemyProps.canAttack && info.IsName("Pointing Gun Standing")}");
 
-        if (isAwaitingInitialAnimationFinish)
+        if (isAwaitingInitialAnimationFinish && !isTank)
         {
             isAwaitingInitialAnimationFinish = !info.IsName("Pointing Gun Standing");
         }
@@ -78,15 +79,15 @@ public class BasicEnemyBehavior : MonoBehaviour
         {
             StopShooting();
         }
-        else if (isGoingToWalk)
+        else if (isGoingToWalk && !isTank)
         {
             WalkOpositeDirection();
         }
-        else if (isWalking)
+        else if (isWalking && !isTank)
         {
             StopWalking();
         }
-        else if (enemyProps.canAttack && info.IsName("Pointing Gun Standing"))
+        else if (enemyProps.canAttack && (info.IsName("Pointing Gun Standing") || isTank))
         {
             //print($"Inimigo {this.name} deve atirar");
             ShootBullet();
@@ -120,6 +121,10 @@ public class BasicEnemyBehavior : MonoBehaviour
         bulletRigidbody.bodyType = RigidbodyType2D.Dynamic;
         bulletRigidbody.velocity = lookDirection * bulletVelocidy;
         bulletRigidbody.gravityScale = 0;
+        if (isTank)
+        {
+            bulletRigidbody.gravityScale = 0.75f;
+        }
 
         // Adiciona lógica de colisão e dano
         bulletAttackBehaviour = bulletObject.AddComponent<AttackBehaviour>();

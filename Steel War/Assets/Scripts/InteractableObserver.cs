@@ -28,7 +28,7 @@ public class InteractableObserver : MonoBehaviour
 
             // TODO - fazer animação de finalização
 
-            PlayerPrefs.SetInt("UnlockedLevel", shouldEndStage+1);
+            //PlayerPrefs.SetInt("UnlockedLevel", shouldEndStage+1);
             GameStateStatic.CompleteLevel(shouldEndStage);
         }
     }

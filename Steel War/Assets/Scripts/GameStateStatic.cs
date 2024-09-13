@@ -10,11 +10,6 @@ public class GameStateStatic : MonoBehaviour
     static public string currentLevel;
     static public Dictionary<int, bool> completedLevels = new();
 
-    
-    void Start()
-    {
-        
-    }
 
     public static void CompleteLevel(int levelIndex)
     {

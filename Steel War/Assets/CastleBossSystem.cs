@@ -41,17 +41,16 @@ public class CastleBossSystem : MonoBehaviour
             if (shouldEndStage)
             {
                 print("Terminando estágio 3");
-                //StartCoroutine(EndStageAfterDelay(true));
-                EndStageAfterDelay(true);
+                StartCoroutine(EndStageAfterDelay());
             }
         }
     }
 
-    private void EndStageAfterDelay(bool temp)
+    private IEnumerator EndStageAfterDelay()
     {
-        //yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(5.0f);
         GameStateStatic.CompleteLevel(3);
-        PlayerPrefs.SetInt("UnlockedLevel", 3);
+        //PlayerPrefs.SetInt("UnlockedLevel", 3);
         SceneManager.LoadScene("Main menu");
     }
 
