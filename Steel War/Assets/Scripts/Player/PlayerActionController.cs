@@ -19,6 +19,7 @@ public class PlayerActionController : MonoBehaviour
     [SerializeField] Vector3[] armCachedPositionsJump   = null;
     [SerializeField] bool[] armCachedIsCalculatedRun    = null;
     [SerializeField] bool[] armCacheIsCalculatedJump    = null;
+    [SerializeField] AudioSource audio = null;
 
     private float horizontalSpeed = 0f;
     private Vector3 armInitialLocalPosition = Vector3.zero;
@@ -43,6 +44,7 @@ public class PlayerActionController : MonoBehaviour
         if (armCachedPositionsJump == null) { armCachedPositionsJump = new Vector3[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de pular
         if (armCachedIsCalculatedRun == null) { armCachedIsCalculatedRun = new bool[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de pular
         if (armCacheIsCalculatedJump == null) { armCacheIsCalculatedJump = new bool[7]; } // TODO (baixa relevância) trocar 7 por lenght do array de sprites da animação de pular
+        if (!audio) { audio = muzzleEffect.GetComponent<AudioSource>(); }
 
     }
 
@@ -121,7 +123,7 @@ public class PlayerActionController : MonoBehaviour
         } 
         else if (Input.GetMouseButtonDown(1))
         {
-            if (playerProps.canAttack)
+            if (playerProps.canAttack && playerProps.isOnGround)
             {
                 print("Usou faca");
                 MelleAttack();
@@ -192,6 +194,7 @@ public class PlayerActionController : MonoBehaviour
         //print($"{angle * Mathf.Rad2Deg}");
         gunShotMuzzleEffect.startRotation3D = new Vector3(0,0, -angle);
         //gunShotMuzzleEffect.main.startRotationZ = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+        audio.Play();
         gunShotMuzzleEffect.Play();
 
 

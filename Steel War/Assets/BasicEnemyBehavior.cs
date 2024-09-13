@@ -14,6 +14,7 @@ public class BasicEnemyBehavior : MonoBehaviour
     [SerializeField] Sprite bulletSprite = null;
     [SerializeField] Animator animator = null;
     [SerializeField] SpriteRenderer spriteRenderer = null;
+    [SerializeField] AudioSource audio = null;
 
 
     private void OnValidate()
@@ -28,6 +29,7 @@ public class BasicEnemyBehavior : MonoBehaviour
         if (!bulletSprite) { bulletSprite = Resources.Load<Sprite>("Assets/Sprites/Enemy_soldier_bullet_sprite.png"); }
         if (!animator) { animator = GetComponent<Animator>(); }
         if (!spriteRenderer) { spriteRenderer = GetComponent<SpriteRenderer>(); }
+        if (!audio) { audio = GetComponent<AudioSource>(); }
     }
 
     // Public parameters
@@ -124,6 +126,7 @@ public class BasicEnemyBehavior : MonoBehaviour
         if (isTank)
         {
             bulletRigidbody.gravityScale = 0.75f;
+            audio.Play();
         }
 
         // Adiciona lógica de colisão e dano

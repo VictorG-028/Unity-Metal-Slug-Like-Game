@@ -5,11 +5,18 @@ using UnityEngine;
 public abstract class IPickable : MonoBehaviour
 {
     protected PlayerProperties playerProps;
+    protected AudioSource audio;
+    protected SpriteRenderer spriteRenderer;
+
+    // Control
+    private bool hasBeenPicked = false;
 
     private void OnValidate()
     {
         GameObject player = GameObject.FindWithTag("Player");
         if (!playerProps && player != null) { playerProps = player.GetComponent<PlayerProperties>(); }
+        if (!audio) { audio = GetComponent<AudioSource>(); }
+        if (!spriteRenderer) { spriteRenderer = GetComponent<SpriteRenderer>(); }
     }
 
     private void Awake()
@@ -22,10 +29,20 @@ public abstract class IPickable : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag("Player"))
+        if (collision.transform.CompareTag("Player") && !hasBeenPicked)
         {
+            hasBeenPicked = true;
             OnPickUp();
-            Destroy(gameObject);
+            if(audio)
+            {
+                audio.Play();
+                spriteRenderer.enabled = false;
+                Destroy(gameObject, 2.0f);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
